@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { db } from "../config/firebase";
+import { db } from "../firebase-config";
 import { addDoc, collection } from "firebase/firestore";
 
 const AddProductForm: React.FC = () => {

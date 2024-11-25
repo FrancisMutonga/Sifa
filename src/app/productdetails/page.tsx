@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import { db } from "../config/firebase";
+import { db } from "../firebase-config";
 import { doc, getDoc, collection, query, where, getDocs } from "firebase/firestore";
 import ProductCard from "../components/productscard";
 import Carousel from "../components/carousel";
