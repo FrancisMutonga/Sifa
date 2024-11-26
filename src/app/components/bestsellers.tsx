@@ -2,6 +2,7 @@
 import React from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';  // Correct import for Swiper v9 and above
+import Image from 'next/image';
 
 const ExploreCollection: React.FC = () => {
   const categories = [
@@ -48,7 +49,7 @@ const ExploreCollection: React.FC = () => {
               {category.products.map((product, productIndex) => (
                 <SwiperSlide key={productIndex}>
                   <div className="relative rounded-lg overflow-hidden w-70 h-65 shadow-lg">
-                    <img
+                    <Image
                       src={product.image}
                       alt={product.name}
                       className="w-full h-64 object-fill"

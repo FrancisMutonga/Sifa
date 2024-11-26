@@ -35,6 +35,7 @@ const ProductDetailPage: React.FC = () => {
 
         setProduct(data);
       } catch (err) {
+        console.error("Error loading products:", err);
         setError("Failed to load product details.");
       } finally {
         setLoading(false);

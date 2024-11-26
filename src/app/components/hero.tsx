@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 import React, { useState, useEffect } from "react";
 
 const HeroSection: React.FC = () => {
@@ -30,7 +31,7 @@ const HeroSection: React.FC = () => {
               currentIndex === index ? "opacity-100" : "opacity-0"
             }`}
           >
-            <img
+            <Image
               src={image}
               alt={`Slide ${index + 1}`}
               className="w-full h-full object-cover"

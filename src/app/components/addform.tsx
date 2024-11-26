@@ -17,7 +17,9 @@ const AddProductForm: React.FC = () => {
   const [message, setMessage] = useState("");
 
   const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -30,34 +32,38 @@ const AddProductForm: React.FC = () => {
 
   const uploadImage = async (): Promise<string | null> => {
     if (!imageFile) return null;
-  
+
     const fileName = `${Date.now()}_${imageFile.name}`;
-    
-    // Upload the image to the 'product-images' bucket
-    const { data: uploadData, error: uploadError } = await supabase.storage
-      .from("product-images")
-      .upload(fileName, imageFile);
-  
-    if (uploadError) {
-      console.error("Image upload error:", uploadError);
-      setMessage("Failed to upload image. Please try again.");
+
+    try {
+      // Upload the file to Supabase Storage
+      const { data: uploadData, error: uploadError } = await supabase.storage
+        .from("product-images")
+        .upload(fileName, imageFile);
+
+      if (uploadError) {
+        console.error("Image upload error:", uploadError);
+        setMessage("Failed to upload image. Please try again.");
+        return null;
+      }
+
+      const publicUrlData = supabase.storage
+        .from("product-images")
+        .getPublicUrl(fileName);
+
+      if (!publicUrlData.data.publicUrl) {
+        console.error("Error fetching public URL");
+        setMessage("Failed to fetch image URL.");
+        return null;
+      }
+
+      return publicUrlData.data.publicUrl;
+    } catch (error) {
+      console.error("Unexpected error during image upload:", error);
+      setMessage("Unexpected error occurred while uploading the image.");
       return null;
     }
-  
-    // Retrieve the public URL for the uploaded image
-    const { data: publicUrlData } = supabase.storage
-      .from("product-images")
-      .getPublicUrl(fileName);
-  
-    if (!publicUrlData) {
-      console.error("Error fetching public URL.");
-      setMessage("Failed to fetch image URL.");
-      return null;
-    }
-  
-    return publicUrlData.publicUrl;
   };
-  
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -65,7 +71,7 @@ const AddProductForm: React.FC = () => {
     setMessage("");
 
     try {
-      // Upload the image first
+      // Upload the image and get its public URL
       const imageUrl = await uploadImage();
 
       if (!imageUrl) {
@@ -73,14 +79,18 @@ const AddProductForm: React.FC = () => {
         return;
       }
 
-      // Update the form data with the image URL
+      // Combine form data with the image URL
       const finalData = { ...formData, image: imageUrl };
 
       // Insert the product into the database
-      const { data, error } = await supabase.from("products").insert([finalData]);
+      const { data, error } = await supabase
+        .from("products")
+        .insert([finalData]);
 
       if (error) {
-        throw error;
+        console.error("Database insert error:", error);
+        setMessage("Failed to add product. Please try again.");
+        return;
       }
 
       setMessage("Product added successfully!");
@@ -94,7 +104,7 @@ const AddProductForm: React.FC = () => {
       });
       setImageFile(null);
     } catch (error) {
-      console.error("Error adding product:", error);
+      console.error("Unexpected error while adding product:", error);
       setMessage("Failed to add product. Please try again.");
     } finally {
       setLoading(false);
@@ -103,7 +113,9 @@ const AddProductForm: React.FC = () => {
 
   return (
     <div className="max-w-3xl mx-auto p-8 bg-white shadow-lg rounded-lg mt-8">
-      <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">Add a New Product</h2>
+      <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
+        Add a New Product
+      </h2>
       {message && (
         <p
           className={`text-center mb-4 ${
@@ -116,7 +128,10 @@ const AddProductForm: React.FC = () => {
 
       <form onSubmit={handleSubmit} className="space-y-6">
         <div>
-          <label htmlFor="name" className="block text-gray-700 font-semibold mb-2">
+          <label
+            htmlFor="name"
+            className="block text-gray-700 font-semibold mb-2"
+          >
             Product Name
           </label>
           <input
@@ -132,7 +147,10 @@ const AddProductForm: React.FC = () => {
         </div>
 
         <div>
-          <label htmlFor="description" className="block text-gray-700 font-semibold mb-2">
+          <label
+            htmlFor="description"
+            className="block text-gray-700 font-semibold mb-2"
+          >
             Description
           </label>
           <textarea
@@ -148,7 +166,10 @@ const AddProductForm: React.FC = () => {
         </div>
 
         <div>
-          <label htmlFor="image" className="block text-gray-700 font-semibold mb-2">
+          <label
+            htmlFor="image"
+            className="block text-gray-700 font-semibold mb-2"
+          >
             Product Image
           </label>
           <input
@@ -163,7 +184,10 @@ const AddProductForm: React.FC = () => {
         </div>
 
         <div>
-          <label htmlFor="specs" className="block text-gray-700 font-semibold mb-2">
+          <label
+            htmlFor="specs"
+            className="block text-gray-700 font-semibold mb-2"
+          >
             Specifications
           </label>
           <textarea
@@ -179,7 +203,10 @@ const AddProductForm: React.FC = () => {
         </div>
 
         <div>
-          <label htmlFor="category" className="block text-gray-700 font-semibold mb-2">
+          <label
+            htmlFor="category"
+            className="block text-gray-700 font-semibold mb-2"
+          >
             Category
           </label>
           <select
@@ -200,7 +227,10 @@ const AddProductForm: React.FC = () => {
         </div>
 
         <div>
-          <label htmlFor="color" className="block text-gray-700 font-semibold mb-2">
+          <label
+            htmlFor="color"
+            className="block text-gray-700 font-semibold mb-2"
+          >
             Color
           </label>
           <input
@@ -218,7 +248,7 @@ const AddProductForm: React.FC = () => {
         <button
           type="submit"
           disabled={loading}
-          className="w-full bg-blue-300 hover:bg-primary-dark text-white py-2 px-4 rounded-lg transition duration-300 disabled:opacity-50"
+          className="w-full bg-primary hover:bg-primary-dark text-white py-2 px-4 rounded-lg transition duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {loading ? "Adding..." : "Add Product"}
         </button>

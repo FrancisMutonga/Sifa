@@ -31,6 +31,7 @@ const ProductsPage: React.FC = () => {
 
         setProducts(data);
       } catch (err) {
+        console.error("Error loading products:", err); // Log the error for debugging
         setError("Failed to load products");
       } finally {
         setLoading(false);
@@ -77,7 +78,7 @@ const ProductsPage: React.FC = () => {
               name={product.name}
               image={product.image}
               description={product.description} 
-              category={product.category} 
+             
             />
               </div>
             </Link>
