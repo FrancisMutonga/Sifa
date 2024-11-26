@@ -3,8 +3,8 @@ import React from "react";
 interface ProductCardProps {
   name: string;
   image: string;
-  description: string; // Keep description for displaying
-  category: string; // Keep category for displaying
+  description: string;
+  category: string;
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({
@@ -14,13 +14,19 @@ const ProductCard: React.FC<ProductCardProps> = ({
   category,
 }) => {
   return (
-    <div className="border rounded-lg bg-dusty overflow-hidden shadow hover:shadow-lg cursor-pointer">
-      <img src={image} alt={name} className="w-full h-48 object-cover" />
+    <div className="border rounded-lg bg-gray-200 overflow-hidden shadow hover:shadow-lg cursor-pointer transform transition duration-300 hover:scale-105 hover:translate-y-2">
+      {/* Card Image */}
+      <div
+        className="w-full h-48 bg-cover bg-center"
+        style={{ backgroundImage: `url(${image})` }}
+        
+      />
+      
       <div className="p-4">
-        <h3 className="text-lg font-bold">{name}</h3>
-        <p className="text-gray-600 mt-2">{description}</p>
+        <h3 className="text-lg text-black font-bold">{name}</h3>
+        <p className="text-black mt-2">{description}</p>
         <div className="flex justify-between items-center mt-4">
-          <span className="text-sm text-gray-500">{category}</span>
+          <span className="text-sm text-black">{category}</span>
         </div>
       </div>
     </div>

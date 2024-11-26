@@ -1,108 +1,89 @@
 "use client";
-import React, { useState, useEffect, useCallback, useRef } from "react";
-import { db } from "../firebase-config";
-import { collection, getDocs, query, limit, orderBy, where, startAfter } from "firebase/firestore";
-import ProductCard from "./productscard"; // Import ProductCard component
+import React, { useEffect, useState } from "react";
+import { supabase } from "../supabaseClient";
+
+interface Product {
+  id: string;
+  name: string;
+  description: string;
+  image: string;
+  specs: string;
+  category: string;
+  color: string;
+}
 
 const ProductList: React.FC = () => {
-  const [products, setProducts] = useState<any[]>([]); // State to store fetched products
-  const [loading, setLoading] = useState<boolean>(false); // Loading state
-  const [error, setError] = useState<string>(""); // Error state
-  const [lastVisible, setLastVisible] = useState<any>(null); // Track the last document fetched
-  const [selectedCategory, setSelectedCategory] = useState<string>(""); // Selected category state
-  const observer = useRef<IntersectionObserver | null>(null); // For scroll observer
-
-  const fetchProducts = useCallback(async () => {
-    try {
-      setLoading(true);
-      setError(""); // Clear previous errors
-
-      const productsRef = collection(db, "products");
-
-      // Start by creating the base query
-      let q = query(productsRef, orderBy("name"), limit(20));
-
-      // Add category filter if selected
-      if (selectedCategory && selectedCategory !== "") {
-        q = query(q, where("category", "==", selectedCategory));
-      }
-
-      // Add pagination logic (if there's a last visible document)
-      if (lastVisible) {
-        q = query(q, startAfter(lastVisible));
-      }
-
-      const querySnapshot = await getDocs(q);
-
-      const productsData = querySnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-
-      setProducts((prevProducts) => [...prevProducts, ...productsData]); // Append new products
-      setLastVisible(querySnapshot.docs[querySnapshot.docs.length - 1]); // Update last visible document
-    } catch (err) {
-      setError("Failed to fetch products.");
-      console.error("Error fetching products:", err);
-    } finally {
-      setLoading(false);
-    }
-  }, [selectedCategory, lastVisible]);
-
-  const loadMoreProducts = (entries: IntersectionObserverEntry[]) => {
-    const entry = entries[0];
-    if (entry.isIntersecting && !loading) {
-      fetchProducts();
-    }
-  };
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
   useEffect(() => {
-    fetchProducts(); // Initial load of products
+    const fetchProducts = async () => {
+      try {
+        setLoading(true);
+        const { data, error } = await supabase
+          .from("products")
+          .select("*");
 
-    // Create the IntersectionObserver to trigger load more when scrolled to the bottom
-    observer.current = new IntersectionObserver(loadMoreProducts, {
-      rootMargin: "100px",
-    });
-
-    return () => {
-      if (observer.current) {
-        observer.current.disconnect();
+        if (error) {
+          console.error("Error fetching products:", error.message);
+          setError("Failed to load products.");
+        } else {
+          setProducts(data || []);
+        }
+      } catch (err) {
+        console.error("Unexpected error:", err);
+        setError("An unexpected error occurred.");
+      } finally {
+        setLoading(false);
       }
     };
-  }, [fetchProducts]); // Dependency array ensures this runs once on mount
 
-  useEffect(() => {
-    if (observer.current) {
-      const element = document.getElementById("scroll-trigger");
-      if (element) {
-        observer.current.observe(element);
-      }
+    fetchProducts();
+  }, []);
+
+  // Group products by category
+  const groupedProducts = products.reduce<Record<string, Product[]>>((acc, product) => {
+    if (!acc[product.category]) {
+      acc[product.category] = [];
     }
-  }, [loading]); // Re-attach observer when loading state changes
+    acc[product.category].push(product);
+    return acc;
+  }, {});
+
+  if (loading) return <p>Loading products...</p>;
+  if (error) return <p className="text-red-500">{error}</p>;
 
   return (
-    <div className="container mx-auto py-8">
-      {loading && <p className="text-center">Loading products...</p>}
-      {error && <p className="text-center text-red-500">{error}</p>}
-
-      {!loading && !error && products.length === 0 && (
-        <p className="text-center">No products available.</p>
-      )}
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {products.map((product) => (
-          <ProductCard
-            key={product.id}
-            name={product.name}
-            image={product.image}
-            description={product.description} // Pass description
-            category={product.category} // Pass category
-          />
-        ))}
-      </div>
-
-      {/* Trigger element for the IntersectionObserver */}
-      <div id="scroll-trigger" className="h-1"></div>
+    <div className="container mx-auto p-6">
+      <h2 className="text-2xl font-bold text-gray-800 mb-6">Product List</h2>
+      {Object.entries(groupedProducts).map(([category, categoryProducts]) => (
+        <div key={category} className="mb-8">
+          <h3 className="text-xl font-semibold text-gray-700 mb-4">{category}</h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {categoryProducts.map((product) => (
+              <div
+                key={product.id}
+                className="p-4 border rounded-lg shadow hover:shadow-lg transition"
+              >
+                <img
+                  src={product.image}
+                  alt={product.name}
+                  className="w-full h-40 object-cover rounded-lg mb-4"
+                />
+                <h4 className="text-lg font-bold text-gray-800">{product.name}</h4>
+                <p className="text-gray-600">{product.description}</p>
+                <p className="text-gray-500 text-sm mt-2">
+                  Color: <span className="font-medium">{product.color}</span>
+                </p>
+                <p className="text-gray-500 text-sm">
+                  Specs: <span className="font-medium">{product.specs}</span>
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
     </div>
   );
 };
