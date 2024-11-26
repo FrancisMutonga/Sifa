@@ -10,6 +10,7 @@ import Link from "next/link";
 interface Product {
   id: string;
   name: string;
+  description: string;
   image: string;
   category: string;
 }
@@ -72,10 +73,12 @@ const ProductsPage: React.FC = () => {
           {filteredProducts.map((product) => (
             <Link key={product.id} href={`/products/${product.id}`} passHref>
               <div className="cursor-pointer">
-                <ProductCard
-                  name={product.name}
-                  image={product.image}
-                />
+              <ProductCard
+              name={product.name}
+              image={product.image}
+              description={product.description} 
+              category={product.category} 
+            />
               </div>
             </Link>
           ))}
