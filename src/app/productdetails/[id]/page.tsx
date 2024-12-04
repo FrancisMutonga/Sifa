@@ -1,7 +1,7 @@
 "use client";
-import { supabase } from "../../supabaseClient"; // Supabase client
-import { notFound, useParams } from "next/navigation"; // `useParams` for accessing params in Next.js 14
-import { useEffect, useState } from "react"; // React hooks
+import { supabase } from "../../supabaseClient";
+import { notFound, useParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
 interface Product {
   id: string;
@@ -18,7 +18,7 @@ export default function Page() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const { id } = useParams(); // Access params using useParams hook in Next.js 14
+  const { id } = useParams();
 
   useEffect(() => {
     if (!id) {
@@ -43,35 +43,32 @@ export default function Page() {
         setProduct(data);
       } catch (err) {
         setError("Failed to fetch product");
+        console.error(err); // Log the error to the console
       } finally {
         setLoading(false);
       }
     };
 
-    fetchProduct(); // Trigger data fetch
-  }, [id]); // Re-run on `id` change
+    fetchProduct();
+  }, [id]);
 
-  // Loading state
   if (loading) {
     return <div>Loading...</div>;
   }
 
-  // If error occurred
   if (error) {
     return <div>{error}</div>;
   }
 
-  // If no product found
   if (!product) {
     return notFound();
   }
 
-  const image = product.image || "/default-image.jpg"; // Default image if none provided
+  const image = product.image || "/default-image.jpg";
 
   return (
     <div className="bg-forest">
       <div className="container mt-20 bg-forest rounded-lg shadow-xl mx-auto p-8">
-        {/* Product Image */}
         <div className="flex flex-col gap-16">
           <div className="flex items-center justify-center">
             <img
@@ -81,7 +78,6 @@ export default function Page() {
             />
           </div>
 
-          {/* Product Details */}
           <div className="w-1/2">
             <h3 className="text-3xl text-nude font-bold mb-4">{product.name}</h3>
             <p className="text-lg text-nude mb-4">{product.description}</p>
@@ -91,7 +87,6 @@ export default function Page() {
           </div>
         </div>
 
-        {/* Back to Products Button */}
         <div className="mt-8">
           <a href="/shop" className="text-nude">
             Back to Products
