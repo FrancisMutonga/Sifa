@@ -1,5 +1,7 @@
-import { supabase } from "../../supabaseClient";
-import { notFound } from "next/navigation";
+"use client";
+import { supabase } from "../../supabaseClient"; // Supabase client
+import { notFound, useParams } from "next/navigation"; // `useParams` for accessing params in Next.js 14
+import { useEffect, useState } from "react"; // React hooks
 
 interface Product {
   id: string;
@@ -11,42 +13,65 @@ interface Product {
   color: string;
 }
 
-export async function generateStaticParams() {
-  const { data: products, error } = await supabase
-    .from("products")
-    .select("id");
+export default function Page() {
+  const [product, setProduct] = useState<Product | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  if (error) {
-    console.error("Error fetching product IDs:", error);
-    return [];
+  const { id } = useParams(); // Access params using useParams hook in Next.js 14
+
+  useEffect(() => {
+    if (!id) {
+      setError("Product ID is missing.");
+      setLoading(false);
+      return;
+    }
+
+    const fetchProduct = async () => {
+      try {
+        const { data, error } = await supabase
+          .from("products")
+          .select("*")
+          .eq("id", id)
+          .single();
+
+        if (error || !data) {
+          setError("Product not found");
+          return;
+        }
+
+        setProduct(data);
+      } catch (err) {
+        setError("Failed to fetch product");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProduct(); // Trigger data fetch
+  }, [id]); // Re-run on `id` change
+
+  // Loading state
+  if (loading) {
+    return <div>Loading...</div>;
   }
 
-  // Ensure 'id' is returned as a string
-  return products.map((product: { id: number }) => ({
-    id: product.id.toString(),  // Convert id to string
-  }));
-}
+  // If error occurred
+  if (error) {
+    return <div>{error}</div>;
+  }
 
-export default async function Page({ params }: { params: { id: string } }) {
-  const { id } = params;
-
-  const { data, error } = await supabase
-    .from("products")
-    .select("*")
-    .eq("id", id)
-    .single();
-
-  if (error || !data) {
+  // If no product found
+  if (!product) {
     return notFound();
   }
 
-  const product: Product = data;
-
-  const image = product.image ? product.image : "/default-image.jpg";
+  const image = product.image || "/default-image.jpg"; // Default image if none provided
 
   return (
     <div className="bg-forest">
       <div className="container mt-20 bg-forest rounded-lg shadow-xl mx-auto p-8">
+        {/* Product Image */}
         <div className="flex flex-col gap-16">
           <div className="flex items-center justify-center">
             <img
@@ -56,6 +81,7 @@ export default async function Page({ params }: { params: { id: string } }) {
             />
           </div>
 
+          {/* Product Details */}
           <div className="w-1/2">
             <h3 className="text-3xl text-nude font-bold mb-4">{product.name}</h3>
             <p className="text-lg text-nude mb-4">{product.description}</p>
@@ -65,6 +91,7 @@ export default async function Page({ params }: { params: { id: string } }) {
           </div>
         </div>
 
+        {/* Back to Products Button */}
         <div className="mt-8">
           <a href="/shop" className="text-nude">
             Back to Products
