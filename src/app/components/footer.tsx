@@ -5,7 +5,7 @@ import Link from "next/link";
 
 const Footer: React.FC = () => {
   return (
-    <footer className="bg-nude text-white p-6 mt-2">
+    <footer className="bg-nude text-white p-6 mt-1">
       <div className="container mx-auto flex flex-col md:flex-row justify-between items-start gap-12">
         {/* Contact Us Section */}
         <div className="w-full md:w-1/3 mb-6 md:mb-0">

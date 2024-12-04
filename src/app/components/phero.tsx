@@ -13,7 +13,7 @@ const Hero: React.FC = () => {
   ];
 
   return (
-    <div className="relative w-full h-[80vh] mt-10">
+    <div className="relative w-full h-[70vh] mt-10">
       <Swiper
         modules={[Autoplay, Pagination]}
         autoplay={{ delay: 3000, disableOnInteraction: false }}
@@ -24,7 +24,7 @@ const Hero: React.FC = () => {
         {heroImages.map((image, index) => (
           <SwiperSlide key={index}>
             <div
-              className="w-full h-full bg-cover bg-center"
+              className="w-full h-full bg-contain bg-center"
               style={{ backgroundImage: `url(${image.src})` }}
             >
               <div className="bg-black bg-opacity-50 h-full flex flex-col justify-center items-center text-white">

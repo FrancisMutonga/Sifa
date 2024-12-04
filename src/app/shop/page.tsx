@@ -2,84 +2,151 @@
 
 import React, { useState, useEffect } from "react";
 import Hero from "../components/phero";
-import SearchFilter from "../components/searchfilter";
 import ProductCard from "../components/productscard";
 import { supabase } from "../supabaseClient";
 import Link from "next/link";
 
+// Define the product and category interfaces
 interface Product {
   id: string;
   name: string;
-  description: string;
   image: string;
-  category: string;
+  categories: { name: string }[]; // Ensure categories is an array
+}
+
+interface Category {
+  id: string;
+  name: string;
+  icon: string;
 }
 
 const ProductsPage: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState<string>("");
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<string>(""); // Default no category selected
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>("");
 
+  // Fetch categories and icons
+  useEffect(() => {
+    const fetchCategories = async () => {
+      const { data, error } = await supabase.from("categories").select("id, name, icon");
+
+      if (error) {
+        setError("Failed to fetch categories.");
+        console.error(error.message);
+      } else {
+        setCategories(data || []);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
+  // Fetch products based on the selected category
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         setLoading(true);
-        const { data, error } = await supabase.from("products").select("*");
+        let query = supabase.from("products").select("id, name, image, categories (name)");
 
-        if (error) throw error;
+        if (selectedCategory) {
+          // Add filter to the query if a category is selected
+          query = query.ilike("categories.name", `%${selectedCategory}%`);
+        }
 
-        setProducts(data);
+        const { data, error } = await query;
+
+        if (error) {
+          setError("Failed to load products.");
+          console.error(error.message);
+        } else {
+          // Ensure categories are always an array
+          const validatedProducts: Product[] = data?.map((product: Product) => ({
+            ...product,
+            categories: Array.isArray(product.categories)
+              ? product.categories
+              : [], // Ensure categories is always an array
+          }));
+
+          setProducts(validatedProducts || []);
+        }
       } catch (err) {
-        console.error("Error loading products:", err); // Log the error for debugging
-        setError("Failed to load products");
+        setError("Failed to load products.");
+        console.error(err);
       } finally {
         setLoading(false);
       }
     };
 
     fetchProducts();
-  }, []);
+  }, [selectedCategory]); // This will run every time the selectedCategory changes
 
-  const categories = Array.from(
-    new Set(products.map((product) => product.category))
-  );
-
+  // Filter products based on selected category
   const filteredProducts = selectedCategory
-    ? products.filter((product) => product.category === selectedCategory)
+    ? products.filter((product) =>
+        product.categories.some(
+          (category) => category.name === selectedCategory
+        )
+      )
     : products;
 
   return (
     <div className="bg-forest mt-20">
       <Hero />
       <div className="container mx-auto p-8">
-        {/* Search Filter */}
-        <SearchFilter
-          categories={categories}
-          selectedCategory={selectedCategory}
-          onCategoryChange={setSelectedCategory}
-        />
-        
-        {/* Loading and Error States */}
+        {/* Category Icons Filter */}
+        <div className="flex items-center space-x-8 mb-8 mx-auto block">
+          {/* "All" Icon Button */}
+          <button
+            key="all"
+            className={`flex flex-col items-center ${selectedCategory === "" ? "" : ""}`}
+            onClick={() => setSelectedCategory("")}
+          >
+            <img
+              src="/all.png" 
+              alt="All"
+              className="h-10 w-10"
+            />
+            <span>All</span>
+          </button>
+
+          {categories && categories.length > 0 ? (
+            categories.map((category) => (
+              <button
+                key={category.id}
+                className={`flex flex-col items-center ${selectedCategory === category.name ? "" : ""}`}
+                onClick={() => setSelectedCategory(category.name)} // Set the selected category on click
+              >
+                <img
+                  src={category.icon || "/icons/default.png"} // Default icon if category doesn't have one
+                  alt={category.name}
+                  className="h-10 w-10"
+                />
+                <span>{category.name}</span>
+              </button>
+            ))
+          ) : (
+            <p>No categories available</p> // Fallback message if categories is empty or null
+          )}
+        </div>
+
         {loading && <p className="text-center">Loading products...</p>}
         {error && <p className="text-center text-red-500">{error}</p>}
-        
-        {/* No products available in the selected category */}
+
         {filteredProducts.length === 0 && !loading && !error && (
           <p className="text-center">No products available in this category.</p>
         )}
-        
-        {/* Product Cards Grid */}
+
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {filteredProducts.map((product) => (
-            <Link key={product.id} href={`/products/${product.id}`} passHref>
+            <Link
+              key={product.id}
+              href={`/productdetails/${product.id}`}
+              passHref
+            >
               <div className="cursor-pointer">
-              <ProductCard
-              name={product.name}
-              image={product.image}
-              description={product.description} 
-             
-            />
+                <ProductCard name={product.name} image={product.image} />
               </div>
             </Link>
           ))}

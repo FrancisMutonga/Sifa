@@ -1,14 +1,14 @@
 "use client";
 import React from "react";
 import Link from "next/link";
-import Image from "next/image";
+
 
 const AboutCard: React.FC = () => {
   return (
     <div className="flex flex-col md:flex-row items-center bg-dusty p-4 rounded-lg shadow-lg">
       {/* Image */}
       <div className="md:w-1/2 w-full">
-        <Image
+        <img
           src="/aboutcard.jpg" 
           alt="About Us"
           className="rounded-lg w-full object-cover"
@@ -17,7 +17,7 @@ const AboutCard: React.FC = () => {
 
       {/* Content */}
       <div className="md:w-1/2 w-full md:pl-6 mt-6 md:mt-0">
-        <h2 className="text-2xl md:text-3xl font-bold  w-18 text-white mb-4">
+        <h2 className="text-2xl md:text-3xl font-bold  w-1/2 text-white mb-4">
         Modern Style Timeless Charm
         </h2>
         <p className="text-white mb-6">
