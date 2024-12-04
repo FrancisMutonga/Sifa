@@ -21,12 +21,18 @@ export async function generateStaticParams() {
     return [];
   }
 
-  return products.map((product: { id: number }) => ({
-    id: product.id.toString(),
+  return products.map((product: { id: string }) => ({
+    id: product.id,
   }));
 }
 
-export default async function Page({ params }: { params: { id: string } }) {
+interface PageProps {
+  params: {
+    id: string;
+  };
+}
+
+export default async function Page({ params }: PageProps) {
   const { id } = params;
 
   const { data, error } = await supabase
@@ -41,7 +47,7 @@ export default async function Page({ params }: { params: { id: string } }) {
 
   const product: Product = data;
 
-  const image = product.image ? product.image : "/default-image.jpg"; 
+  const image = product.image ? product.image : "/default-image.jpg";
 
   return (
     <div className="bg-forest">
