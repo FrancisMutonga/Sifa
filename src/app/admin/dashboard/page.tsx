@@ -4,25 +4,24 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "../../supabaseClient";
 import Link from "next/link";
-import { Session } from "@supabase/supabase-js";  // Import the correct type
+import { User } from "@supabase/supabase-js";
 
 const Dashboard: React.FC = () => {
   const router = useRouter();
-  
-  // Replace `any` with `Session` type
-  const [user, setUser] = useState<Session | null>(null); 
+  const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchUser = async () => {
-      const { data: sessionUser, error } = await supabase.auth.getUser();  // Use await to get the resolved user data
+      const { data, error } = await supabase.auth.getUser();
 
-      if (error || !sessionUser) {
+      if (error || !data?.user) {
         router.push("/admin/login");
-      } else {
-        setUser(sessionUser);  // Set the user to the resolved session
-        setIsLoading(false);
+        return;
       }
+
+      setUser(data.user); // Set the user data
+      setIsLoading(false);
     };
 
     fetchUser();
@@ -51,27 +50,21 @@ const Dashboard: React.FC = () => {
       </div>
 
       <div className="p-6">
-        {/* Display welcome message with the user's email */}
-        <h2 className="text-2xl mb-6">
-          Welcome, {user?.user?.email || "Admin"}!
-        </h2>
+        <h2 className="text-2xl mb-6">Welcome, {user?.email || "Admin"}!</h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-          {/* View All Products */}
           <Link href="/admin/products">
             <div className="bg-dusty p-6 shadow-xl rounded">
               <h3 className="font-bold text-lg mb-4">Manage Products</h3>
             </div>
           </Link>
 
-          {/* Add Product */}
           <Link href="/admin/add-product">
             <div className="bg-dusty p-6 shadow-xl rounded">
               <h3 className="font-bold text-lg mb-4">Add Products</h3>
             </div>
           </Link>
 
-          {/* Settings */}
           <Link href="/admin/settings">
             <div className="bg-dusty p-6 shadow-xl rounded">
               <h3 className="font-bold text-lg mb-4">Settings</h3>

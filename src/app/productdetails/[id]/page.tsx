@@ -43,7 +43,7 @@ export default function Page() {
         setProduct(data);
       } catch (err) {
         setError("Failed to fetch product");
-        console.error(err); // Log the error to the console
+        console.error(err);
       } finally {
         setLoading(false);
       }
