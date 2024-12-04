@@ -1,31 +1,32 @@
 "use client"; // Explicitly mark this component as a client-side component
 
 import React, { useState, useEffect } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { supabase } from "../../supabaseClient";
+import { Suspense } from "react";
 
 const AdminLogin: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const searchParams = useSearchParams(); // Access URL parameters
   const router = useRouter();
 
   useEffect(() => {
-    // Optional: Show error message from URL params, e.g., ?error=session_expired
+    // Handle error from the query string if necessary
+    const searchParams = new URLSearchParams(window.location.search);
     const errorParam = searchParams.get("error");
     if (errorParam) {
       setError(decodeURIComponent(errorParam.replace(/_/g, " ")));
     }
-  }, [searchParams]);
+  }, []);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError("");
 
-    const {  error } = await supabase.auth.signInWithPassword({
+    const { error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
@@ -34,7 +35,8 @@ const AdminLogin: React.FC = () => {
       setError("Invalid email or password.");
       setLoading(false);
     } else {
-      // Redirect after login (fallback to dashboard if no redirect param)
+      // Redirect after login
+      const searchParams = new URLSearchParams(window.location.search);
       const redirectTo = searchParams.get("redirect") || "/admin/dashboard";
       router.push(redirectTo);
     }
@@ -74,7 +76,7 @@ const AdminLogin: React.FC = () => {
               required
             />
           </div>
-          <div className="flex items-center justify-center"> {/* Center button */}
+          <div className="flex items-center justify-center">
             <button
               type="submit"
               className="w-1/2 py-2 px-4 bg-gradient-to-r from-gray-900 via-gray-800 to-black text-white rounded-lg hover:bg-blue-700 focus:ring focus:ring-blue-300"
@@ -89,4 +91,10 @@ const AdminLogin: React.FC = () => {
   );
 };
 
-export default AdminLogin;
+export default function SuspenseWrappedAdminLogin() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <AdminLogin />
+    </Suspense>
+  );
+}
