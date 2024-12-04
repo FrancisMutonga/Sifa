@@ -21,18 +21,13 @@ export async function generateStaticParams() {
     return [];
   }
 
-  return products.map((product: { id: string }) => ({
-    id: product.id,
+  // Ensure 'id' is returned as a string
+  return products.map((product: { id: number }) => ({
+    id: product.id.toString(),  // Convert id to string
   }));
 }
 
-interface PageProps {
-  params: {
-    id: string;
-  };
-}
-
-export default async function Page({ params }: PageProps) {
+export default async function Page({ params }: { params: { id: string } }) {
   const { id } = params;
 
   const { data, error } = await supabase
@@ -60,16 +55,16 @@ export default async function Page({ params }: PageProps) {
               className="w-1/2 h-auto object-contain"
             />
           </div>
+
           <div className="w-1/2">
             <h3 className="text-3xl text-nude font-bold mb-4">{product.name}</h3>
             <p className="text-lg text-nude mb-4">{product.description}</p>
-            <p className="text-md text-nude mb-2">
-              Category: {product.category}
-            </p>
+            <p className="text-md text-nude mb-2">Category: {product.category}</p>
             <p className="text-md text-nude mb-2">Color: {product.color}</p>
             <p className="text-md text-nude mb-4">Specs: {product.specs}</p>
           </div>
         </div>
+
         <div className="mt-8">
           <a href="/shop" className="text-nude">
             Back to Products
