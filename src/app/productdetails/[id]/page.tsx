@@ -1,4 +1,3 @@
-
 import { supabase } from "../../supabaseClient"; // Import your Supabase client
 import { notFound } from "next/navigation"; // Import the Next.js built-in `notFound` function to handle missing pages
 
@@ -12,7 +11,7 @@ interface Product {
   color: string;
 }
 
-
+// Function to generate static paths for dynamic routes
 export async function generateStaticParams() {
   const { data: products, error } = await supabase
     .from("products")
@@ -24,67 +23,62 @@ export async function generateStaticParams() {
   }
 
   return products.map((product: { id: number }) => ({
-    id: product.id.toString(), 
+    id: product.id.toString(), // Ensure ID is a string
   }));
 }
 
-
+// Page component to display a single product's details
 export default async function Page({ params }: { params: { id: string } }) {
-  
-  const { id } = await params; 
+  const { id } = params; // Directly access `id` from params
 
- 
   const { data, error } = await supabase
     .from("products")
     .select("*")
     .eq("id", id)
-    .single();
+    .single(); // Use `.single()` to return only one product
 
+  // Handle errors or missing product
   if (error || !data) {
-   
     return notFound();
   }
 
-  const product: Product = data;
+  const product: Product = data; // Assign the fetched data to the `Product` type
 
-  
+  // Default image if product doesn't have one
   const image = product.image ? product.image : "/default-image.jpg"; 
 
   return (
     <div className="bg-forest">
-       <div className="container mt-20 bg-forest rounded-lg shadow-xl mx-auto p-8">
-      {/* Product Image */}
-      <div className="flex flex-col  gap-16">
-        <div className="flex items-center justify-center">
-        <img
-      src={image}
-      alt={product.name}
-      className="w-1/2 h-auto object-contain"
-    />
+      <div className="container mt-20 bg-forest rounded-lg shadow-xl mx-auto p-8">
+        {/* Product Image */}
+        <div className="flex flex-col gap-16">
+          <div className="flex items-center justify-center">
+            <img
+              src={image}
+              alt={product.name}
+              className="w-1/2 h-auto object-contain"
+            />
+          </div>
+
+          {/* Product Details */}
+          <div className="w-1/2">
+            <h3 className="text-3xl text-nude font-bold mb-4">{product.name}</h3>
+            <p className="text-lg text-nude mb-4">{product.description}</p>
+            <p className="text-md text-nude mb-2">
+              Category: {product.category}
+            </p>
+            <p className="text-md text-nude mb-2">Color: {product.color}</p>
+            <p className="text-md text-nude mb-4">Specs: {product.specs}</p>
+          </div>
         </div>
-      
-        {/* Product Details */}
-        <div className="w-1/2">
-          <h3 className="text-3xl text-nude font-bold mb-4">{product.name}</h3>
-          <p className="text-lg text-nude mb-4">{product.description}</p>
-          <p className="text-md text-nude mb-2">
-            Category: {product.category}
-          </p>
-          <p className="text-md text-nude mb-2">Color: {product.color}</p>
-          <p className="text-md text-nude mb-4">Specs: {product.specs}</p>
+
+        {/* Back to Products Button */}
+        <div className="mt-8">
+          <a href="/shop" className="text-nude">
+            Back to Products
+          </a>
         </div>
       </div>
-
-      {/* Back to Products Button */}
-      <div className="mt-8">
-        <a href="/shop" className="text-nude">
-          Back to Products
-        </a>
-      </div>
-
-  
     </div>
-    </div>
-   
   );
 }
