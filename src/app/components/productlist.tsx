@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { supabase } from "../supabaseClient";
+import Image from "next/image";
 
 interface Product {
   id: string;
@@ -21,9 +22,7 @@ const ProductList: React.FC = () => {
     const fetchProducts = async () => {
       try {
         setLoading(true);
-        const { data, error } = await supabase
-          .from("products")
-          .select("*");
+        const { data, error } = await supabase.from("products").select("*");
 
         if (error) {
           console.error("Error fetching products:", error.message);
@@ -42,14 +41,16 @@ const ProductList: React.FC = () => {
     fetchProducts();
   }, []);
 
-  // Group products by category
-  const groupedProducts = products.reduce<Record<string, Product[]>>((acc, product) => {
-    if (!acc[product.category]) {
-      acc[product.category] = [];
-    }
-    acc[product.category].push(product);
-    return acc;
-  }, {});
+  const groupedProducts = products.reduce<Record<string, Product[]>>(
+    (acc, product) => {
+      if (!acc[product.category]) {
+        acc[product.category] = [];
+      }
+      acc[product.category].push(product);
+      return acc;
+    },
+    {}
+  );
 
   if (loading) return <p>Loading products...</p>;
   if (error) return <p className="text-red-500">{error}</p>;
@@ -66,9 +67,11 @@ const ProductList: React.FC = () => {
                 key={product.id}
                 className="p-4 border rounded-lg shadow hover:shadow-lg transition"
               >
-                <img
+                <Image
                   src={product.image}
                   alt={product.name}
+                  width={500}
+                  height={400}
                   className="w-full h-40 object-cover rounded-lg mb-4"
                 />
                 <h4 className="text-lg font-bold text-gray-800">{product.name}</h4>

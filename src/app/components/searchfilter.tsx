@@ -1,12 +1,12 @@
+import Image from 'next/image';
+
 interface SearchFilterProps {
-  categories: { name: string; icon: string }[];  // Receive categories as props
+  categories: { name: string; icon: string }[];
   selectedCategory: string;
   onCategoryChange: (category: string) => void;
 }
 
 const SearchFilter: React.FC<SearchFilterProps> = ({ categories, selectedCategory, onCategoryChange }) => {
-  console.log("SearchFilter Categories:", categories); // Debug: log categories
-
   return (
     <div className="mb-4">
       <select
@@ -18,8 +18,16 @@ const SearchFilter: React.FC<SearchFilterProps> = ({ categories, selectedCategor
         {categories.length > 0 ? (
           categories.map((category) => (
             <option key={category.name} value={category.name}>
-              <img src={category.icon} alt={category.name} className="w-5 h-5 inline mr-2" />
-              {category.name}
+              <div className="inline-flex items-center">
+                <Image
+                  src={category.icon}
+                  alt={category.name}
+                  width={20}
+                  height={20}
+                  className="mr-2"
+                />
+                {category.name}
+              </div>
             </option>
           ))
         ) : (

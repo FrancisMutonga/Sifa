@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 
 interface ProductCardProps {
   name: string;
@@ -7,13 +8,18 @@ interface ProductCardProps {
 
 const ProductCard: React.FC<ProductCardProps> = ({ name, image }) => {
   return (
-    <div className=" rounded-lg flex flex-col justify-center items-center hoverflow-hidden shadow-xl cursor-pointer transform transition duration-300 hover:scale-105 hover:translate-y-2">
-      <div
-        className="w-full h-52 bg-contain bg-center"
-        style={{ backgroundImage: `url(${image})` }}
-      />
+    <div className="rounded-lg flex flex-col justify-center items-center shadow-xl cursor-pointer transform transition duration-300 hover:scale-105 hover:translate-y-2">
+      <div className="w-full h-52 relative">
+        <Image
+          src={image}
+          alt={name}
+          layout="fill"
+          objectFit="contain"
+          className="rounded-t-lg"
+        />
+      </div>
 
-      <div className="p-4 ">
+      <div className="p-4">
         <h3 className="text-lg text-white font-bold">{name}</h3>
       </div>
     </div>

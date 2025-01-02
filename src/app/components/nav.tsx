@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
+import Image from "next/image";
 
 const Navbar: React.FC = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -22,9 +23,9 @@ const Navbar: React.FC = () => {
         {/* Logo and Name */}
         <div className="flex items-center space-x-4 -ml-4">
           <Link href="/admin/login">
-            <img src="/logo.png" alt="Logo" width={50} height={50} />
+            <Image src="/logo.png" alt="Logo" width={50} height={50} />
           </Link>
-          <span className="text-3xl font-extrabold">Sifa Interior</span>
+          <span className="text-3xl font-semibold">Sifa Interior</span>
         </div>
 
         {/* Desktop Links */}

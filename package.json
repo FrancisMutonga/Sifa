@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.46.2",
+    "aos": "^2.3.4",
+    "axios": "^1.7.9",
     "boxicons": "^2.1.4",
     "firebase": "^11.0.2",
     "next": "15.0.3",
@@ -19,6 +21,7 @@
     "swiper": "^11.1.15"
   },
   "devDependencies": {
+    "@types/aos": "^3.0.7",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
@@ -26,6 +29,7 @@
     "eslint": "^8",
     "eslint-config-next": "15.0.3",
     "postcss": "^8.4.49",
+    "prettier": "^3.4.2",
     "tailwindcss": "^3.4.15",
     "typescript": "^5"
   }

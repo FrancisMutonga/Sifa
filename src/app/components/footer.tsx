@@ -36,17 +36,10 @@ const Footer: React.FC = () => {
                 Home
               </Link>
             </li>
+            
             <li>
               <Link
-                href="/about"
-                className="text-white text-sm hover:text-forest transition-colors"
-              >
-                About
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="/products"
+                href="/shop"
                 className="text-white text-sm hover:text-forest transition-colors"
               >
                 Products

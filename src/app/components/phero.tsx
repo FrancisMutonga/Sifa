@@ -1,47 +1,79 @@
 "use client";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
+import { supabase } from "../supabaseClient";
+
+interface News {
+  id: string;
+  title: string;
+  description: string;
+  image?: string; 
+  publish_date: string;
+}
 
 const Hero: React.FC = () => {
-  const heroImages = [
-    { src: "/hslide.png", alt: "Explore Our Collection" },
-    { src: "/tile3.jpg", alt: "Find Your Style" },
-    { src: "/sofa2.png", alt: "Quality You Can Trust" },
-  ];
+  const [news, setNews] = useState<News[]>([]);
+
+  useEffect(() => {
+    const fetchNews = async () => {
+      try {
+        const { data, error } = await supabase
+          .from("news")
+          .select("id, title, description, image, publish_date")
+          .order("publish_date", { ascending: false });
+
+        if (error) {
+          console.error("Failed to fetch news:", error.message);
+          return;
+        }
+
+        console.log("Fetched news data:", data);
+        setNews(data || []);
+      } catch (err) {
+        console.error("Unexpected error:", err);
+      }
+    };
+
+    fetchNews();
+  }, []);
 
   return (
-    <div className="relative w-full h-[70vh] mt-10">
+    <div className="relative w-full h-[70vh] mb-20">
       <Swiper
-        modules={[Autoplay, Pagination]}
-        autoplay={{ delay: 3000, disableOnInteraction: false }}
-        pagination={{ clickable: true }}
+        modules={[Autoplay, Pagination]} // Correct module usage for Swiper
+        autoplay={{
+          delay: 3000,
+          disableOnInteraction: false, // Ensure autoplay continues after interaction
+        }}
+        pagination={{
+          clickable: true, // Ensure pagination dots are clickable
+        }}
         loop
         className="w-full h-full"
       >
-        {heroImages.map((image, index) => (
-          <SwiperSlide key={index}>
+        {news.map((item) => (
+          <SwiperSlide key={item.id}>
             <div
-              className="w-full h-full bg-contain bg-center"
-              style={{ backgroundImage: `url(${image.src})` }}
+              className="w-full h-auto bg-gray-800 flex flex-col justify-center items-center text-white relative"
+              style={{
+                backgroundImage: `url(${item.image || "/default-news-bg.jpg"})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                height: "100%",
+                width:"auto",
+
+              }}
             >
-              <div className="bg-black bg-opacity-50 h-full flex flex-col justify-center items-center text-white">
-                <h1 className="text-2xl lg:text-4xl font-bold">{image.alt}</h1>
-              </div>
+              <div className="absolute inset-0 bg-black opacity-50"></div> {/* Optional overlay */}
+              <h1 className="text-2xl lg:text-4xl font-bold relative z-10">{item.title}</h1>
+              <p className="text-sm lg:text-lg mt-2 text-center px-4 relative z-10">{item.description}</p>
             </div>
           </SwiperSlide>
         ))}
       </Swiper>
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2">
-        <a
-          href="#latest-products"
-          className="bg-primary text-white px-6 py-3 rounded-lg hover:bg-opacity-90 transition text-center"
-        >
-          Latest Products
-        </a>
-      </div>
     </div>
   );
 };

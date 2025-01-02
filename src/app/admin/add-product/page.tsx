@@ -1,18 +1,39 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "../../supabaseClient";
+import Image from "next/image";
+
+// Define the category type
+interface Category {
+  id: string;
+  name: string;
+}
 
 const AddProduct = () => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [color, setColor] = useState("");
-  const [category, setCategory] = useState("");
+  const [category, setCategory] = useState(""); 
   const [specs, setSpecs] = useState("");
   const [imageUrl, setImageUrl] = useState("");
-  const [imageFile, setImageFile] = useState<File | null>(null); // Used for preview before upload
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [categories, setCategories] = useState<Category[]>([]); // Use Category type for categories state
   const router = useRouter();
+
+  // Fetch categories from the categories table
+  useEffect(() => {
+    const fetchCategories = async () => {
+      const { data, error } = await supabase.from("categories").select("id, name");
+      if (error) {
+        console.error("Error fetching categories:", error);
+      } else {
+        setCategories(data || []); // data is now typed as Category[]
+      }
+    };
+    fetchCategories();
+  }, []);
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -46,14 +67,14 @@ const AddProduct = () => {
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault(); // Prevent page refresh
-
+    e.preventDefault(); 
+  
     // Check if all fields are filled in and if the image URL is set
-    if (!name || !description || !color || !category || !specs || !imageUrl) {
+    if (!name.trim() || !description.trim() || !color.trim() || !category.trim() || !specs.trim() || !imageUrl.trim()) {
       alert("Please fill in all fields and upload an image.");
       return;
     }
-
+  
     const { error } = await supabase
       .from("products")
       .insert([
@@ -61,13 +82,12 @@ const AddProduct = () => {
           name,
           description,
           color,
-          category,
+          category_id: category,
           specs,
-          image_url: imageUrl,
-          created_at: new Date(),
+          image: imageUrl,
         },
       ]);
-
+  
     if (error) {
       console.error("Error adding product", error);
     } else {
@@ -77,7 +97,7 @@ const AddProduct = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-r from-gray-900 via-gray-800 to-black p-6 mt-20 flex flex-col items-center justify-center ">
+    <div className="min-h-screen bg-gradient-to-r from-gray-900 via-gray-800 to-black p-6 mt-20 flex flex-col items-center justify-center">
       <h2 className="text-2xl mb-4">Add New Product</h2>
 
       <div className="bg-gradient-to-r from-gray-900 via-gray-800 to-black p-6 shadow-md text-black grid-place-items-center rounded">
@@ -102,20 +122,28 @@ const AddProduct = () => {
             placeholder="Color"
             className="w-full mb-4 bg-gray-200 p-2 border border-gray-300 rounded"
           />
-          <input
-            type="text"
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-            placeholder="Category"
+
+          {/* Category Dropdown */}
+          <select
+            value={category} // Set category to category_id
+            onChange={(e) => setCategory(e.target.value)} // Set the category_id
             className="w-full mb-4 bg-gray-200 p-2 border border-gray-300 rounded"
-          />
+          >
+            <option value="">Select Category</option>
+            {categories.map((category) => (
+              <option key={category.id} value={category.id}>
+                {category.name}
+              </option>
+            ))}
+          </select>
+
           <textarea
             value={specs}
             onChange={(e) => setSpecs(e.target.value)}
             placeholder="Specifications"
             className="w-full mb-4 bg-gray-200 p-2 border border-gray-300 rounded"
           />
-          
+
           {/* Image Upload Section */}
           <div className="mb-4">
             <input
@@ -124,11 +152,11 @@ const AddProduct = () => {
               onChange={handleImageUpload}
               className="w-full p-2 bg-gray-200 border border-gray-300 rounded"
             />
-            
+
             {/* Display Preview of Image Before Upload */}
             {imageFile && (
               <div className="mt-4">
-                <img
+                <Image
                   src={URL.createObjectURL(imageFile)} // Display the file preview
                   alt="Image Preview"
                   className="w-32 h-32 object-cover rounded"
@@ -144,10 +172,10 @@ const AddProduct = () => {
             Add Product
           </button>
         </form>
-        
       </div>
     </div>
   );
 };
+
 
 export default AddProduct;

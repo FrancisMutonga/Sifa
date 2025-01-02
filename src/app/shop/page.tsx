@@ -5,13 +5,14 @@ import Hero from "../components/phero";
 import ProductCard from "../components/productscard";
 import { supabase } from "../supabaseClient";
 import Link from "next/link";
+import Image from "next/image"; // Use Next.js Image component
 
 // Define the product and category interfaces
 interface Product {
   id: string;
   name: string;
   image: string;
-  categories: { name: string }[]; // Ensure categories is an array
+  categories: { name: string; icon: string }[]; // Ensure categories is an array
 }
 
 interface Category {
@@ -23,14 +24,16 @@ interface Category {
 const ProductsPage: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState<string>(""); // Default no category selected
+  const [selectedCategory, setSelectedCategory] = useState<string>(""); 
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>("");
 
   // Fetch categories and icons
   useEffect(() => {
     const fetchCategories = async () => {
-      const { data, error } = await supabase.from("categories").select("id, name, icon");
+      const { data, error } = await supabase
+        .from("categories")
+        .select("id, name, icon");
 
       if (error) {
         setError("Failed to fetch categories.");
@@ -48,7 +51,9 @@ const ProductsPage: React.FC = () => {
     const fetchProducts = async () => {
       try {
         setLoading(true);
-        let query = supabase.from("products").select("id, name, image, categories (name)");
+        let query = supabase
+          .from("products")
+          .select("id, name, image, categories (id, name, icon)");
 
         if (selectedCategory) {
           // Add filter to the query if a category is selected
@@ -62,13 +67,14 @@ const ProductsPage: React.FC = () => {
           console.error(error.message);
         } else {
           // Ensure categories are always an array
-          const validatedProducts: Product[] = data?.map((product: Product) => ({
-            ...product,
-            categories: Array.isArray(product.categories)
-              ? product.categories
-              : [], // Ensure categories is always an array
-          }));
+          const validatedProducts: Product[] = data?.map(
+            (product: Product) => ({
+              ...product,
+              categories: product.categories ? [product.categories] : [], // Ensure categories is always an array
+            })
+          );
 
+          console.log(validatedProducts); // Inspect the final product data
           setProducts(validatedProducts || []);
         }
       } catch (err) {
@@ -92,65 +98,72 @@ const ProductsPage: React.FC = () => {
     : products;
 
   return (
-    <div className="bg-forest mt-20">
+    <div className="bg-forest mt-20 p-20 mx-auto ">
       <Hero />
-      <div className="container mx-auto p-8">
-        {/* Category Icons Filter */}
-        <div className="flex items-center space-x-8 mb-8 mx-auto block">
-          {/* "All" Icon Button */}
-          <button
-            key="all"
-            className={`flex flex-col items-center ${selectedCategory === "" ? "" : ""}`}
-            onClick={() => setSelectedCategory("")}
-          >
-            <img
-              src="/all.png" 
-              alt="All"
-              className="h-10 w-10"
-            />
-            <span>All</span>
-          </button>
 
-          {categories && categories.length > 0 ? (
-            categories.map((category) => (
-              <button
-                key={category.id}
-                className={`flex flex-col items-center ${selectedCategory === category.name ? "" : ""}`}
-                onClick={() => setSelectedCategory(category.name)} // Set the selected category on click
-              >
-                <img
-                  src={category.icon || "/icons/default.png"} // Default icon if category doesn't have one
-                  alt={category.name}
-                  className="h-10 w-10"
-                />
-                <span>{category.name}</span>
-              </button>
-            ))
-          ) : (
-            <p>No categories available</p> // Fallback message if categories is empty or null
-          )}
-        </div>
+      {/* Category Icons Filter */}
+      <div className="flex items-center space-x-8 mb-8 overflow-x-auto">
+        {/* "All" Icon Button */}
+        <button
+          key="all"
+          className={`flex flex-col items-center ${
+            selectedCategory === "" ? "text-nude" : ""
+          }`}
+          onClick={() => setSelectedCategory("")}
+        >
+          <Image
+            src="/all.png"
+            alt="All"
+            width={32} // Adjust the width and height according to your needs
+            height={32}
+            className="object-contain"
+          />
+          <span>All</span>
+        </button>
 
-        {loading && <p className="text-center">Loading products...</p>}
-        {error && <p className="text-center text-red-500">{error}</p>}
-
-        {filteredProducts.length === 0 && !loading && !error && (
-          <p className="text-center">No products available in this category.</p>
-        )}
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredProducts.map((product) => (
-            <Link
-              key={product.id}
-              href={`/productdetails/${product.id}`}
-              passHref
+        {categories && categories.length > 0 ? (
+          categories.map((category) => (
+            <button
+              key={category.id}
+              className={`flex flex-col items-center ${
+                selectedCategory === category.name ? "text-nude" : ""
+              }`}
+              onClick={() => setSelectedCategory(category.name)} // Set the selected category on click
             >
-              <div className="cursor-pointer">
-                <ProductCard name={product.name} image={product.image} />
-              </div>
-            </Link>
-          ))}
-        </div>
+              <Image
+                src={category.icon.trimEnd() || "/icons/default.png"} // Trim any trailing spaces
+                alt={category.name}
+                width={40} // Adjust the width and height according to your needs
+                height={40}
+                className="object-contain"
+              />
+              <span>{category.name}</span>
+            </button>
+          ))
+        ) : (
+          <p>No categories available</p> // Fallback message if categories is empty or null
+        )}
+      </div>
+
+      {loading && <p className="text-center">Loading products...</p>}
+      {error && <p className="text-center text-red-500">{error}</p>}
+
+      {filteredProducts.length === 0 && !loading && !error && (
+        <p className="text-center">No products available in this category.</p>
+      )}
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        {filteredProducts.map((product) => (
+          <Link
+            key={product.id}
+            href={`/productdetails/${product.id}`}
+            passHref
+          >
+            <div className="cursor-pointer">
+              <ProductCard name={product.name} image={product.image} />
+            </div>
+          </Link>
+        ))}
       </div>
     </div>
   );

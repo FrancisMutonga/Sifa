@@ -21,6 +21,22 @@ module.exports = {
           DEFAULT:'#4A646C'
         }
       },
+      animation: {
+        'slide-in': 'slideIn 1s ease-out',
+        'fade-in': 'fadeIn 1s ease-out',
+        'fade-in-delay': 'fadeIn 1s ease-out 0.5s',  // Delay fade-in animation
+      },
+      keyframes: {
+        slideIn: {
+          '0%': { transform: 'translateX(100%)' },
+          '100%': { transform: 'translateX(0)' },
+        },
+        fadeIn: {
+          '0%': { opacity: 0 },
+          '100%': { opacity: 1 },
+        },
+      },
+      
     },
   },
   plugins: [],

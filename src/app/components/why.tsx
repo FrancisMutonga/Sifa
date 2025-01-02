@@ -1,6 +1,10 @@
 import React from "react";
 
-const WhyUs: React.FC = () => {
+interface WhyUsProps {
+  className?: string;
+}
+
+const WhyUs: React.FC<WhyUsProps> = ({ className }) => {
   const reasons = [
     {
       title: "Innovative Designs",
@@ -41,7 +45,7 @@ const WhyUs: React.FC = () => {
   ];
 
   return (
-    <section className="bg-dusty py-10 rounded-xl">
+    <section className={`bg-dusty py-10 rounded-xl ${className}`}>
       <div className="container mx-auto px-6 lg:px-12 text-white">
         <h2 className="text-3xl font-bold text-center mb-16">
           Why Choose Us
