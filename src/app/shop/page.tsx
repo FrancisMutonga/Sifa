@@ -12,13 +12,21 @@ interface Product {
   id: string;
   name: string;
   image: string;
-  categories: { name: string; icon: string }[]; // Ensure categories is an array
+  categories: Category[]; // Ensure categories is an array of Category objects
 }
 
 interface Category {
   id: string;
   name: string;
   icon: string;
+}
+
+// Define the response type from Supabase query
+interface ProductResponse {
+  id: string;
+  name: string;
+  image: string;
+  categories: Category[] | Category | null; // categories can be either an array or a single object or null
 }
 
 const ProductsPage: React.FC = () => {
@@ -66,12 +74,18 @@ const ProductsPage: React.FC = () => {
           setError("Failed to load products.");
           console.error(error.message);
         } else {
-          // Transform data to match Product interface
-          const validatedProducts: Product[] = data?.map((product: any) => ({
-            ...product,
-            categories: product.categories.map(({ name, icon }: any) => ({ name, icon })), // Extract only name and icon
-          }));
-  
+          // Validate the categories and set the product data
+          const validatedProducts: Product[] = (data as ProductResponse[]).map(
+            (product) => ({
+              ...product,
+              categories: Array.isArray(product.categories)
+                ? product.categories
+                : product.categories
+                ? [product.categories]
+                : [], // Safeguard against null or non-array categories
+            })
+          );
+
           setProducts(validatedProducts || []);
         }
       } catch (err) {
@@ -84,13 +98,12 @@ const ProductsPage: React.FC = () => {
   
     fetchProducts();
   }, [selectedCategory]);
-  // This will run every time the selectedCategory changes
 
   // Filter products based on selected category
   const filteredProducts = selectedCategory
     ? products.filter((product) =>
-        product.categories.some(
-          (category) => category.name === selectedCategory
+        product.categories?.some(
+          (category) => category?.name === selectedCategory // Safeguard against undefined category
         )
       )
     : products;
@@ -104,34 +117,30 @@ const ProductsPage: React.FC = () => {
         {/* "All" Icon Button */}
         <button
           key="all"
-          className={`flex flex-col items-center ${
-            selectedCategory === "" ? "text-nude" : ""
-          }`}
+          className={`flex flex-col items-center ${selectedCategory === "" ? "text-nude" : ""}`}
           onClick={() => setSelectedCategory("")}
         >
           <Image
             src="/all.png"
             alt="All"
-            width={32} // Adjust the width and height according to your needs
+            width={32}
             height={32}
             className="object-contain"
           />
           <span>All</span>
         </button>
 
-        {categories && categories.length > 0 ? (
+        {categories.length > 0 ? (
           categories.map((category) => (
             <button
               key={category.id}
-              className={`flex flex-col items-center ${
-                selectedCategory === category.name ? "text-nude" : ""
-              }`}
-              onClick={() => setSelectedCategory(category.name)} // Set the selected category on click
+              className={`flex flex-col items-center ${selectedCategory === category.name ? "text-nude" : ""}`}
+              onClick={() => setSelectedCategory(category.name)}
             >
               <Image
-                src={category.icon.trimEnd() || "/icons/default.png"} // Trim any trailing spaces
+                src={category.icon.trimEnd() || "/icons/default.png"}
                 alt={category.name}
-                width={40} // Adjust the width and height according to your needs
+                width={40}
                 height={40}
                 className="object-contain"
               />
@@ -139,7 +148,7 @@ const ProductsPage: React.FC = () => {
             </button>
           ))
         ) : (
-          <p>No categories available</p> // Fallback message if categories is empty or null
+          <p>No categories available</p>
         )}
       </div>
 
@@ -152,11 +161,7 @@ const ProductsPage: React.FC = () => {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
         {filteredProducts.map((product) => (
-          <Link
-            key={product.id}
-            href={`/productdetails/${product.id}`}
-            passHref
-          >
+          <Link key={product.id} href={`/productdetails/${product.id}`} passHref>
             <div className="cursor-pointer">
               <ProductCard name={product.name} image={product.image} />
             </div>
