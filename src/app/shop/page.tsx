@@ -51,30 +51,27 @@ const ProductsPage: React.FC = () => {
     const fetchProducts = async () => {
       try {
         setLoading(true);
+  
         let query = supabase
           .from("products")
-          .select("id, name, image, categories (id, name, icon)");
-
+          .select("id, name, image, categories (name, icon)");
+  
         if (selectedCategory) {
-          // Add filter to the query if a category is selected
           query = query.ilike("categories.name", `%${selectedCategory}%`);
         }
-
+  
         const { data, error } = await query;
-
+  
         if (error) {
           setError("Failed to load products.");
           console.error(error.message);
         } else {
-          // Ensure categories are always an array
-          const validatedProducts: Product[] = data?.map(
-            (product: Product) => ({
-              ...product,
-              categories: product.categories ? [product.categories] : [], // Ensure categories is always an array
-            })
-          );
-
-          console.log(validatedProducts); // Inspect the final product data
+          // Transform data to match Product interface
+          const validatedProducts: Product[] = data?.map((product: any) => ({
+            ...product,
+            categories: product.categories.map(({ name, icon }: any) => ({ name, icon })), // Extract only name and icon
+          }));
+  
           setProducts(validatedProducts || []);
         }
       } catch (err) {
@@ -84,9 +81,10 @@ const ProductsPage: React.FC = () => {
         setLoading(false);
       }
     };
-
+  
     fetchProducts();
-  }, [selectedCategory]); // This will run every time the selectedCategory changes
+  }, [selectedCategory]);
+  // This will run every time the selectedCategory changes
 
   // Filter products based on selected category
   const filteredProducts = selectedCategory
