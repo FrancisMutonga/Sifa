@@ -48,6 +48,10 @@ const ProductsPage: React.FC = () => {
         console.error(error.message);
       } else {
         setCategories(data || []);
+        // Set the first category as the selected category
+        if (data && data.length > 0) {
+          setSelectedCategory(data[0].name);
+        }
       }
     };
 
@@ -114,8 +118,6 @@ const ProductsPage: React.FC = () => {
 
       {/* Category Icons Filter */}
       <div className="flex items-center space-x-8 mb-8 overflow-x-auto">
-        
-
         {categories.length > 0 ? (
           categories.map((category) => (
             <button
