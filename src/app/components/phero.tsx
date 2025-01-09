@@ -61,8 +61,8 @@ const Hero: React.FC = () => {
               <Image
                 src={item.image || "/default-news-bg.jpg"}
                 alt={item.title}
-                width={1200} 
-                height={600} 
+                width={1000} 
+                height={500} 
                 className="object-contain" 
               />
             </div>
