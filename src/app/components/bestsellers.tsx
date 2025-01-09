@@ -78,7 +78,9 @@ class ExploreCollection extends Component<ExploreCollectionProps, ExploreCollect
                       <Image
                         src={product.image}
                         alt={product.name}
-                        className="w-full h-64 object-fill"
+                        className="object-fill"
+                        height={300}
+                        width={300}
                       />
                       <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4 flex gap-16 items-center">
                         <h3 className="text-white text-lg text-center font-semibold">

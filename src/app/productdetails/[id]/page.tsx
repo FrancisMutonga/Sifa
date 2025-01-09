@@ -2,7 +2,7 @@
 import { supabase } from "../../supabaseClient";
 import { notFound, useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import Image from 'next/image';
+import Image from "next/image";
 
 interface Product {
   id: string;
@@ -33,7 +33,7 @@ export default function Page() {
       try {
         const { data, error } = await supabase
           .from("products")
-          .select("*, categories(name)") 
+          .select("*, categories(name)")
           .eq("id", id)
           .single();
 
@@ -86,15 +86,16 @@ export default function Page() {
             <Image
               src={image}
               alt={product.name}
-              width={500}  
-              height={500} 
-              className="w-full h-auto object-contain"
-              layout="intrinsic" // This allows the image to maintain its aspect ratio
+              width={500}
+              height={500}
+              layout="intrinsic"
             />
           </div>
 
           <div className="w-1/2">
-            <h3 className="text-3xl text-nude font-bold mb-4">{product.name}</h3>
+            <h3 className="text-3xl text-nude font-bold mb-4">
+              {product.name}
+            </h3>
             <p className="text-lg text-nude mb-4">{product.description}</p>
             <p className="text-md text-nude mb-2">Category: {categoryName}</p>
             <p className="text-md text-nude mb-2">Color: {product.color}</p>

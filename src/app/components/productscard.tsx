@@ -13,8 +13,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ name, image }) => {
         <Image
           src={image}
           alt={name}
-          layout="fill"
-          objectFit="contain"
+          layout="fill" // Image fills its container
+          objectFit="contain" // Ensures the image maintains its aspect ratio
           className="rounded-t-lg"
         />
       </div>

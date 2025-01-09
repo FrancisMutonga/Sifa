@@ -5,12 +5,13 @@ import { Autoplay, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 import { supabase } from "../supabaseClient";
+import Image from "next/image";
 
 interface News {
   id: string;
   title: string;
   description: string;
-  image?: string; 
+  image?: string;
   publish_date: string;
 }
 
@@ -41,35 +42,29 @@ const Hero: React.FC = () => {
   }, []);
 
   return (
-    <div className="relative w-full h-[70vh] mb-20">
+    <div className="relative w-full mb-20">
       <Swiper
-        modules={[Autoplay, Pagination]} // Correct module usage for Swiper
+        modules={[Autoplay, Pagination]}
         autoplay={{
           delay: 3000,
-          disableOnInteraction: false, // Ensure autoplay continues after interaction
+          disableOnInteraction: false,
         }}
         pagination={{
-          clickable: true, // Ensure pagination dots are clickable
+          clickable: true,
         }}
         loop
-        className="w-full h-full"
+        className="w-full"
       >
         {news.map((item) => (
-          <SwiperSlide key={item.id}>
-            <div
-              className="w-full h-auto bg-gray-800 flex flex-col justify-center items-center text-white relative"
-              style={{
-                backgroundImage: `url(${item.image || "/default-news-bg.jpg"})`,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-                height: "100%",
-                width:"auto",
-
-              }}
-            >
-              <div className="absolute inset-0 bg-black opacity-50"></div> {/* Optional overlay */}
-              <h1 className="text-2xl lg:text-4xl font-bold relative z-10">{item.title}</h1>
-              <p className="text-sm lg:text-lg mt-2 text-center px-4 relative z-10">{item.description}</p>
+          <SwiperSlide key={item.id} className="flex justify-center items-center">
+            <div className="relative flex justify-center">
+              <Image
+                src={item.image || "/default-news-bg.jpg"}
+                alt={item.title}
+                width={1200} 
+                height={600} 
+                className="object-contain" 
+              />
             </div>
           </SwiperSlide>
         ))}

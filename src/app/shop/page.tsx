@@ -109,26 +109,12 @@ const ProductsPage: React.FC = () => {
     : products;
 
   return (
-    <div className="bg-forest mt-20 p-20 mx-auto ">
+    <div className="bg-forest mt-20 p-8 mx-auto ">
       <Hero />
 
       {/* Category Icons Filter */}
       <div className="flex items-center space-x-8 mb-8 overflow-x-auto">
-        {/* "All" Icon Button */}
-        <button
-          key="all"
-          className={`flex flex-col items-center ${selectedCategory === "" ? "text-nude" : ""}`}
-          onClick={() => setSelectedCategory("")}
-        >
-          <Image
-            src="/all.png"
-            alt="All"
-            width={32}
-            height={32}
-            className="object-contain"
-          />
-          <span>All</span>
-        </button>
+        
 
         {categories.length > 0 ? (
           categories.map((category) => (

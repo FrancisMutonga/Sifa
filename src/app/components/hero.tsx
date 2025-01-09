@@ -37,6 +37,9 @@ const HeroSection: React.FC<HeroSectionProps> = ({ className }) => {
               backgroundImage: `url(${image})`,
               backgroundSize: "cover",
               backgroundPosition: "center",
+              backgroundRepeat: "no-repeat",
+              height: "100vh",
+              width: "100%",
             }}
           >
             {/* Slogan */}

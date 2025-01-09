@@ -14,7 +14,6 @@ const SearchFilter: React.FC<SearchFilterProps> = ({ categories, selectedCategor
         value={selectedCategory}
         onChange={(e) => onCategoryChange(e.target.value)}
       >
-        <option value="">All Categories</option>
         {categories.length > 0 ? (
           categories.map((category) => (
             <option key={category.name} value={category.name}>
@@ -30,9 +29,7 @@ const SearchFilter: React.FC<SearchFilterProps> = ({ categories, selectedCategor
               </div>
             </option>
           ))
-        ) : (
-          <option>No categories available</option>
-        )}
+        ) : null} {/* No "No categories available" message */}
       </select>
     </div>
   );
