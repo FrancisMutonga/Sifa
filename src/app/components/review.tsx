@@ -16,7 +16,7 @@ interface ReviewsProps {
 const Reviews: React.FC<ReviewsProps> = ({ className }) => {
   const reviews: Review[] = [
     {
-      name: "John Paul",
+      name: "Peter Waweru",
       title: "CEO, ary ltd",
       profilePic: "/review3.jpg",
       testimony:
@@ -24,7 +24,7 @@ const Reviews: React.FC<ReviewsProps> = ({ className }) => {
       date: "Nov 10, 2024",
     },
     {
-      name: "Jane Smith",
+      name: "Rachel Wambui",
       title: "Homeowner",
       profilePic: "/review1.jpg",
       testimony:
@@ -32,7 +32,7 @@ const Reviews: React.FC<ReviewsProps> = ({ className }) => {
       date: "Nov 8, 2024",
     },
     {
-      name: "Cleveland Brown",
+      name: "Stephenr Roy",
       title: "Manager, ABC Corp",
       profilePic: "/review2.jpg",
       testimony:
