@@ -14,7 +14,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       {/* SEO Improvements in <head> */}
       <Head>
         <title>Sifa Interiors - Home</title>
-        <link rel="icon" type="image/png" sizes="32x32" href="/logo.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png" />
         <meta
           name="description"
           content="Welcome to Sifa Interiors. Discover premium quality furniture, tiles, and more for your home."

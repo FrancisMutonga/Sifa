@@ -18,7 +18,7 @@ const Reviews: React.FC<ReviewsProps> = ({ className }) => {
     {
       name: "Peter Waweru",
       title: "CEO, ary ltd",
-      profilePic: "/review3.jpg",
+      profilePic: "/review1.jpg",
       testimony:
         "The team at Sifa Interiors transformed our office space into a modern and functional workspace that we love!",
       date: "Nov 10, 2024",
@@ -26,13 +26,13 @@ const Reviews: React.FC<ReviewsProps> = ({ className }) => {
     {
       name: "Rachel Wambui",
       title: "Homeowner",
-      profilePic: "/review1.jpg",
+      profilePic: "/review3.jpg",
       testimony:
         "Working with Sifa Interiors was a delight. Their designs are stunning, and the team was incredibly professional.",
       date: "Nov 8, 2024",
     },
     {
-      name: "Stephenr Roy",
+      name: "Stephen Roy",
       title: "Manager, ABC Corp",
       profilePic: "/review2.jpg",
       testimony:
