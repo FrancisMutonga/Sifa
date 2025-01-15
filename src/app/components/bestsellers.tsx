@@ -62,7 +62,7 @@ class ExploreCollection extends Component<ExploreCollectionProps, ExploreCollect
               <h3 className="text-2xl font-semibold mb-8">{category.name}</h3>
 
               <Swiper
-                spaceBetween={30}
+                spaceBetween={60}
                 slidesPerView={1}
                 breakpoints={{
                   640: { slidesPerView: 2 },
@@ -73,22 +73,23 @@ class ExploreCollection extends Component<ExploreCollectionProps, ExploreCollect
                 autoplay={{ delay: 3000 }}
               >
                 {category.products.map((product: Product, productIndex: number) => (
-                  <SwiperSlide key={productIndex}>
-                    <div className="relative rounded-lg overflow-hidden w-70 h-65 shadow-lg transform transition duration-500 hover:scale-105 hover:shadow-xl">
-                      <Image
-                        src={product.image}
-                        alt={product.name}
-                        className="object-fill"
-                        height={300}
-                        width={300}
-                      />
-                      <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4 flex gap-16 items-center">
-                        <h3 className="text-white text-lg text-center font-semibold">
-                          {product.name}
-                        </h3>
-                      </div>
-                    </div>
-                  </SwiperSlide>
+                 <SwiperSlide key={productIndex}>
+                 <div className="relative rounded-lg overflow-hidden w-[280px] h-[320px] shadow-lg transform transition duration-500 hover:scale-105 hover:shadow-xl mx-2">
+                   <Image
+                     src={product.image}
+                     alt={product.name}
+                     className="object-fill"
+                     height={300}
+                     width={260}
+                   />
+                   <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4">
+                     <h3 className="text-white text-lg text-center font-semibold">
+                       {product.name}
+                     </h3>
+                   </div>
+                 </div>
+               </SwiperSlide>
+               
                 ))}
               </Swiper>
             </div>

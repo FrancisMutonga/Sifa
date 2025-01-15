@@ -1,5 +1,7 @@
 import React from "react";
 import Image from "next/image";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
 
 interface Review {
   name: string;
@@ -42,35 +44,50 @@ const Reviews: React.FC<ReviewsProps> = ({ className }) => {
   ];
 
   return (
-    <section className={`bg-forest py-16 ${className}`}>
-      <div className="container mx-auto px-8">
+    <section className={`bg-forest  ${className}`}>
+      <div className="container mx-auto p-4 w-full">
         <h2 className="text-3xl font-bold text-white text-center mb-12">What Our Clients Say</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-16">
+        <Swiper
+          spaceBetween={60}  
+          slidesPerView={1} 
+          autoplay={{
+            delay: 3000,  
+            disableOnInteraction: false,  
+          }}
+          loop={true}
+          breakpoints={{
+            640: {
+              slidesPerView: 2,  
+            },
+            1024: {
+              slidesPerView: 3,  
+            },
+          }}
+        >
           {reviews.map((review, index) => (
-            <div
-              key={index}
-              className="bg-dusty shadow-xl rounded-xl p-6 flex flex-col justify-between transition-transform hover:scale-105"
-            >
-              <div className="flex items-center mb-4">
-                <Image
-                  src={review.profilePic}
-                  alt={`${review.name}'s profile`}
-                  width={64}
-                  height={64}
-                  className="rounded-full mr-4 object-cover"
-                />
-                <div>
-                  <h3 className="text-xl text-white font-bold">{review.name}</h3>
-                  <p className="text-sm text-white">{review.title}</p>
+            <SwiperSlide key={index}>
+              <div className="bg-dusty shadow-xl rounded-xl p-6 flex flex-col justify-between transition-transform hover:scale-105">
+                <div className="flex items-center mb-4">
+                  <Image
+                    src={review.profilePic}
+                    alt={`${review.name}'s profile`}
+                    width={64}
+                    height={64}
+                    className="rounded-full mr-4 object-cover"
+                  />
+                  <div>
+                    <h3 className="text-xl text-white font-bold">{review.name}</h3>
+                    <p className="text-sm text-white">{review.title}</p>
+                  </div>
                 </div>
+
+                <p className="text-white italic mb-4">{`"${review.testimony}"`}</p>
+
+                <p className="text-sm text-white text-right">{review.date}</p>
               </div>
-
-              <p className="text-white italic mb-4">{`"${review.testimony}"`}</p>
-
-              <p className="text-sm text-white text-right">{review.date}</p>
-            </div>
+            </SwiperSlide>
           ))}
-        </div>
+        </Swiper>
       </div>
     </section>
   );

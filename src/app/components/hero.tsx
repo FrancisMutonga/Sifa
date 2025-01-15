@@ -20,7 +20,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ className }) => {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
-    }, 5000); // Adjust time (5000ms = 5 seconds) between image swaps
+    }, 5000); 
 
     return () => clearInterval(interval);
   }, [images.length]);

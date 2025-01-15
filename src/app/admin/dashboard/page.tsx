@@ -54,7 +54,7 @@ const Dashboard: React.FC = () => {
       <div className="p-6 w-full">
         <h2 className="text-2xl mb-6">Welcome, {user?.email || "Admin"}!</h2>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 w-full">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 w-full text-center">
           <Link href="/admin/products">
             <div className="bg-dusty p-6 shadow-xl rounded">
               <h3 className="font-bold text-lg mb-4">Manage Products</h3>
@@ -77,6 +77,11 @@ const Dashboard: React.FC = () => {
             </div>
           </Link>
 
+          <Link href="/admin/messages">
+            <div className="bg-dusty p-6 shadow-xl rounded">
+              <h3 className="font-bold text-lg mb-4">Messages</h3>
+            </div>
+          </Link>
           <Link href="/admin/settings">
             <div className="bg-dusty p-6 shadow-xl rounded">
               <h3 className="font-bold text-lg mb-4">Settings</h3>
