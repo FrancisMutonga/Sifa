@@ -7,8 +7,8 @@ interface Message {
   firstname: string;
   lastname: string;
   email: string;
-  phone: string; // Added phone
-  message: string; // Added message
+  phone: string; 
+  message: string; 
   created_at: string;
 }
 
