@@ -16,7 +16,7 @@ const Navbar: React.FC = () => {
 
   return (
     <nav
-      className="bg-nude fixed top-0 z-50 w-full flex text-black p-4 shadow-[0_4px_4px_-2px_rgba(0,0,0,0.4)]"
+      className="bg-nude fixed top-0 z-50 w-full flex text-black p-4 px-12 shadow-[0_4px_4px_-2px_rgba(0,0,0,0.4)]"
       style={{ fontFamily: "SegoeUI" }}
     >
       <div className="container mx-auto flex justify-between items-center">

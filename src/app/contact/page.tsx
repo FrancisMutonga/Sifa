@@ -7,6 +7,8 @@ import {
   FaFacebookF,
   FaWhatsapp,
   FaInstagram,
+  
+  FaTwitter,
 } from "react-icons/fa";
 import { supabase } from "../supabaseClient"; 
 
@@ -74,7 +76,7 @@ const ContactPage: React.FC = () => {
   return (
     <div className="mx-auto bg-forest p-8 mt-20">
       {/* Contact Form Section */}
-      <section className="mb-12">
+      <section className="mb-text-white">
         <h2 className="text-3xl font-bold text-center mb-8">Contact Us</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
           <form
@@ -192,14 +194,17 @@ const ContactPage: React.FC = () => {
                 <span className="text-lg">Aryan Limited door no7, Nairobi, Kenya</span>
               </div>
               <div className="flex gap-12 items-center text-xl">
-                <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">
+                <a href="https://www.facebook.com/people/sifainteriors/61573172223176/" target="_blank" rel="noopener noreferrer">
                   <FaFacebookF className="text-white hover:text-blue-800" />
                 </a>
-                <a href="https://twitter.com" target="_blank" rel="noopener noreferrer">
+                <a href="https://wa.me/254702055158" target="_blank" rel="noopener noreferrer">
                   <FaWhatsapp className="text-white hover:text-blue-600" />
                 </a>
-                <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">
+                <a href="https://www.instagram.com/_sifainteriors/" target="_blank" rel="noopener noreferrer">
                   <FaInstagram className="text-white hover:text-blue-900" />
+                </a>
+                <a href="https://x.com/sifainteriors20" target="_blank" rel="noopener noreferrer">
+                  <FaTwitter className="text-white hover:text-blue-900" />
                 </a>
               </div>
             </div>

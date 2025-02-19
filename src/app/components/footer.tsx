@@ -85,7 +85,7 @@ const Footer: React.FC = () => {
           <h3 className="text-xl font-bold mb-3">Find Us</h3>
           <div className="flex space-x-4">
             <a
-              href="https://facebook.com"
+              href="https://www.facebook.com/people/sifainteriors/61573172223176/"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -97,7 +97,7 @@ const Footer: React.FC = () => {
               />
             </a>
             <a
-              href="https://twitter.com"
+              href="https://x.com/sifainteriors20"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -109,7 +109,7 @@ const Footer: React.FC = () => {
               />
             </a>
             <a
-              href="https://instagram.com"
+              href="https://www.instagram.com/_sifainteriors/"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -121,7 +121,7 @@ const Footer: React.FC = () => {
               />
             </a>
             <a
-              href="https://whatsapp.com"
+              href="https://wa.me/254702055158"
               target="_blank"
               rel="noopener noreferrer"
             >

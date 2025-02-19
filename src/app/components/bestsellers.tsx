@@ -54,7 +54,7 @@ class ExploreCollection extends Component<ExploreCollectionProps, ExploreCollect
 
     return (
       <section className={`py-16 bg-forest ${className}`}>
-        <div className="container mx-auto text-center">
+        <div className="container mx-auto text-white text-center">
           <h2 className="text-3xl font-bold mb-12">Explore Our Best Sellers</h2>
 
           {categories.map((category, index) => (

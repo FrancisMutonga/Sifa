@@ -117,7 +117,7 @@ const ProductsPage: React.FC = () => {
       <Hero />
 
       {/* Category Icons Filter */}
-      <div className="flex items-center space-x-8 mb-8 overflow-x-auto">
+      <div className="flex items-center text-white space-x-8 mb-8 overflow-x-auto">
         {categories.length > 0 ? (
           categories.map((category) => (
             <button
