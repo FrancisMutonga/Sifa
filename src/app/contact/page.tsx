@@ -191,7 +191,7 @@ const ContactPage: React.FC = () => {
               </div>
               <div className="flex items-center">
                 <FaMapMarkerAlt className="text-white mr-4" />
-                <span className="text-lg">Aryan Limited door no7, Nairobi, Kenya</span>
+                <span className="text-lg">Road A, off Likoni road next to kenwest cables</span>
               </div>
               <div className="flex gap-12 items-center text-xl">
                 <a href="https://www.facebook.com/people/sifainteriors/61573172223176/" target="_blank" rel="noopener noreferrer">
@@ -209,6 +209,29 @@ const ContactPage: React.FC = () => {
               </div>
             </div>
           </div>
+           {/* School Location with Google Maps */}
+        <div className="flex flex-col gap-6 p-6">
+          <h3 className="text-2xl font-bold text-center text-primary mb-3">
+            Visit our Showrooms
+          </h3>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6 rounded-lg text-white shadow-lg">
+            {/* Main Showroom */}
+            <div className="w-full">
+              <h4 className="text-xl font-bold text-slate mb-3 text-center md:text-left">
+                Main Showroom
+              </h4>
+              <div className="relative w-full h-72">
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d15956.236023080894!2d36.861832!3d-1.32087!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182f118e4f74001f%3A0x6bf8c19bef307b9b!2sKenwest%20Cables%20Ltd.!5e0!3m2!1sen!2ske!4v1716288899999"
+                  allowFullScreen
+                  loading="lazy"
+                  className="absolute top-0 left-0 w-full h-full border-0 rounded-lg"
+                ></iframe>
+              </div>
+            </div>
+            </div>
+            </div>
         </div>
       </section>
     </div>
