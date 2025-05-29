@@ -12,7 +12,7 @@ const Footer: React.FC = () => {
           <h3 className="text-xl font-bold mb-3">Contact Us</h3>
           <ul className="space-y-2">
             <li className="text-sm">
-              <span className="font-semibold">Aryan limited no.17</span>
+              <span className="font-semibold">Location:</span>Road A, off Likoni road next to kenwest cables
             </li>
             <li className="text-sm">
               <span className="font-semibold">Phone:</span> 0702055158
