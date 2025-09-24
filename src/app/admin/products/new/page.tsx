@@ -2,10 +2,10 @@
 
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { supabase } from "../../supabaseClient";
+import { supabase } from "../../../supabaseClient";
 import Image from "next/image";
 
-// Define the category type
+
 interface Category {
   id: string;
   name: string;
@@ -19,17 +19,17 @@ const AddProduct = () => {
   const [specs, setSpecs] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [imageFile, setImageFile] = useState<File | null>(null);
-  const [categories, setCategories] = useState<Category[]>([]); // Use Category type for categories state
+  const [categories, setCategories] = useState<Category[]>([]); 
   const router = useRouter();
 
-  // Fetch categories from the categories table
+
   useEffect(() => {
     const fetchCategories = async () => {
       const { data, error } = await supabase.from("categories").select("id, name");
       if (error) {
         console.error("Error fetching categories:", error);
       } else {
-        setCategories(data || []); // data is now typed as Category[]
+        setCategories(data || []); 
       }
     };
     fetchCategories();
@@ -38,12 +38,12 @@ const AddProduct = () => {
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      setImageFile(file); // Set the file for preview
+      setImageFile(file);
 
       const fileName = `${Date.now()}-${file.name}`;
       const filePath = `images/${fileName}`;
 
-      // Upload image to Supabase Storage
+      
       const { error } = await supabase.storage
         .from("images")
         .upload(filePath, file);
@@ -53,13 +53,13 @@ const AddProduct = () => {
         return;
       }
 
-      // Fetch the public URL of the uploaded image
+     
       const publicUrlData = supabase.storage
         .from("images")
         .getPublicUrl(filePath);
 
       if (publicUrlData.data?.publicUrl) {
-        setImageUrl(publicUrlData.data.publicUrl);  // Successfully set the image URL
+        setImageUrl(publicUrlData.data.publicUrl);  
       } else {
         console.error("Error: publicUrl not found.");
       }
@@ -69,7 +69,7 @@ const AddProduct = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault(); 
   
-    // Check if all fields are filled in and if the image URL is set
+  
     if (!name.trim() || !description.trim() || !color.trim() || !category.trim() || !specs.trim() || !imageUrl.trim()) {
       alert("Please fill in all fields and upload an image.");
       return;
@@ -97,37 +97,37 @@ const AddProduct = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-r from-gray-900 via-gray-800 to-black p-6 mt-20 flex flex-col items-center justify-center">
-      <h2 className="text-2xl mb-4">Add New Product</h2>
+    <div className="min-h-screen  p-6 mt-10 flex flex-col items-center justify-center">
+      <h2 className="text-3xl sm:text-3xl md:text-4xl lg:text-5xl text-forest font-bold  mb-4">Add New Product</h2>
 
-      <div className="bg-gradient-to-r from-gray-900 via-gray-800 to-black p-6 shadow-md text-black grid-place-items-center rounded">
+      <div className=" p-6 shadow-md text-black grid-place-items-center rounded-xl">
         <form onSubmit={handleSubmit}>
           <input
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="Name"
-            className="w-full mb-4 bg-gray-200 p-2 border border-gray-300 rounded"
+            className="w-full mb-4 bg-white/30 p-2 border border-gray-300 rounded-xl"
           />
           <textarea
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             placeholder="Description"
-            className="w-full mb-4 bg-gray-200 p-2 border border-gray-300 rounded"
+            className="w-full mb-4 bg-white/30 p-2 border border-gray-300 rounded-xl"
           />
           <input
             type="text"
             value={color}
             onChange={(e) => setColor(e.target.value)}
             placeholder="Color"
-            className="w-full mb-4 bg-gray-200 p-2 border border-gray-300 rounded"
+            className="w-full mb-4 bg-white/30 p-2 border border-gray-300 rounded-xl"
           />
 
           {/* Category Dropdown */}
           <select
-            value={category} // Set category to category_id
-            onChange={(e) => setCategory(e.target.value)} // Set the category_id
-            className="w-full mb-4 bg-gray-200 p-2 border border-gray-300 rounded"
+            value={category} 
+            onChange={(e) => setCategory(e.target.value)}
+            className="w-full mb-4 bg-white/30 p-2 border border-gray-300 rounded-xl"
           >
             <option value="">Select Category</option>
             {categories.map((category) => (
@@ -141,7 +141,7 @@ const AddProduct = () => {
             value={specs}
             onChange={(e) => setSpecs(e.target.value)}
             placeholder="Specifications"
-            className="w-full mb-4 bg-gray-200 p-2 border border-gray-300 rounded"
+            className="w-full mb-4 bg-white/30 p-2 border border-gray-300 rounded-xl"
           />
 
           {/* Image Upload Section */}
@@ -150,14 +150,14 @@ const AddProduct = () => {
               type="file"
               accept="image/*"
               onChange={handleImageUpload}
-              className="w-full p-2 bg-gray-200 border border-gray-300 rounded"
+              className="w-full p-2 bg-white/30 border border-gray-300 rounded-xl"
             />
 
             {/* Display Preview of Image Before Upload */}
             {imageFile && (
               <div className="mt-4">
                 <Image
-                  src={URL.createObjectURL(imageFile)} // Display the file preview
+                  src={URL.createObjectURL(imageFile)}
                   alt="Image Preview"
                   className="w-32 h-32 object-cover rounded"
                 />
@@ -167,7 +167,7 @@ const AddProduct = () => {
 
           <button
             type="submit"
-            className="bg-blue-500 text-white px-6 py-2 rounded mx-auto block"
+            className="bg-white/70 text-forest font-semibold px-6 py-2 rounded-full border border-forest mx-auto block"
           >
             Add Product
           </button>

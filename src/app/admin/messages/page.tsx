@@ -52,19 +52,19 @@ const MessagesPage = () => {
   };
 
   return (
-    <div className="mt-20 p-6 bg-gradient-to-r from-gray-900 via-gray-800 to-black">
-      <h3 className="text-2xl text-center font-bold mb-6 text-white">All Messages</h3>
+    <div className="mt-10 p-6 ">
+      <h3 className="ext-3xl sm:text-3xl md:text-4xl lg:text-5xl text-forest text-center font-bold mb-6">All Messages</h3>
 
       {error && <p className="text-red-500">{error}</p>}
 
       <div className="overflow-x-auto">
-        <table className="min-w-full bg-white border border-gray-300 text-black">
+        <table className="min-w-full bg-white/50  rounded-xl text-black">
           <thead>
-            <tr className="bg-gray-100">
-              <th className="px-6 py-3 text-left text-sm font-bold text-black border-b">First Name</th>
-              <th className="px-6 py-3 text-left text-sm font-bold text-black border-b">Last Name</th>
-              <th className="px-6 py-3 text-left text-sm font-bold text-black border-b">Date</th>
-              <th className="px-6 py-3 text-left text-sm font-bold text-black border-b">Actions</th>
+            <tr className="bg-dusty">
+              <th className="px-6 py-3 text-left text-lg font-bold text-white border-b">First Name</th>
+              <th className="px-6 py-3 text-left text-lg font-bold text-white border-b">Last Name</th>
+              <th className="px-6 py-3 text-left text-lg font-bold text-white border-b">Date</th>
+              <th className="px-6 py-3 text-left text-lg font-bold text-white border-b">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -78,7 +78,7 @@ const MessagesPage = () => {
                 <td className="px-6 py-4 border-b">
                   <button
                     onClick={() => handleViewMessage(message)}
-                    className="px-4 py-2 text-dusty rounded-md hover:text-blue-200"
+                    className="px-4 py-2 text-dusty rounded-md font-semibold"
                   >
                     View
                   </button>
@@ -92,8 +92,8 @@ const MessagesPage = () => {
       {/* Modal for message details */}
       {isModalOpen && selectedMessage && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4">
-          <div className="bg-gray-100 rounded-lg shadow-lg p-6 max-w-md w-full text-black">
-            <h3 className="text-xl font-bold mb-4">Message Details</h3>
+          <div className="bg-white rounded-lg shadow-lg p-6 max-w-md w-full text-black">
+            <h3 className="text-xl text-forest text-center font-bold mb-4">Message Details</h3>
             <p>
               <strong>First Name:</strong> {selectedMessage.firstname}
             </p>

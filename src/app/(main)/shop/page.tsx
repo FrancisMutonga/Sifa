@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import Hero from "../components/phero";
-import ProductCard from "../components/productscard";
-import { supabase } from "../supabaseClient";
+import Hero from "../../components/phero";
+import ProductCard from "../../components/productscard";
+import { supabase } from "../../supabaseClient";
 import Link from "next/link";
 import Image from "next/image";
 

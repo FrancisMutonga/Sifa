@@ -3,13 +3,13 @@ import React, { useEffect } from 'react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 
-import HeroSection from './components/hero';
-import AboutCard from './components/aboutcard';
-import Stats from './components/stat';
-import WhyUs from './components/why';
-import Reviews from './components/review';
-import ExploreCollection from './components/bestsellers';
-import CTASection from './components/cta';
+import HeroSection from './../components/hero';
+import AboutCard from './../components/aboutcard';
+import Stats from './../components/stat';
+import WhyUs from './../components/why';
+import Reviews from './../components/review';
+import ExploreCollection from './../components/bestsellers';
+import CTASection from './../components/cta';
 
 function Page() {
   useEffect(() => {

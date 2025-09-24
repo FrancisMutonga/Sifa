@@ -1,5 +1,5 @@
 "use client";
-import { supabase } from "../../supabaseClient";
+import { supabase } from "../../../supabaseClient";
 import { notFound, useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import Image from "next/image";

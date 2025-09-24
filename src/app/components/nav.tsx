@@ -22,7 +22,7 @@ const Navbar: React.FC = () => {
       <div className="container mx-auto flex justify-between  items-center">
         {/* Logo and Name */}
         <div className="flex items-center space-x-4 -ml-4">
-          <Link href="/admin/login">
+          <Link href="/auth/login">
             <Image src="/logo.png" alt="Logo" width={50} height={50} />
           </Link>
           <span className="text-3xl sm:text-3xl md:text-4xl lg:text-5xl text-forest font-semibold">Sifa Studios</span>

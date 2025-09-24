@@ -50,28 +50,28 @@ const BestSellers: React.FC = () => {
   };
 
   return (
-    <div className="p-6 mt-20 bg-gradient-to-r from-gray-900 via-gray-800 to-black flex flex-col gap-4 w-full">
-      <h2 className="text-2xl font-bold text-center mb-4">Manage Best Sellers</h2>
-      <table className="w-full bg-gray-200 border-collapse border border-gray-300 text-black rounded">
+    <div className="p-6 mt-10  flex flex-col gap-4 w-full">
+      <h2 className="text-2xl sm:text-2xl md:text-3xl lg:text-4xl text-forest font-bold text-center mb-4">Manage Best Sellers</h2>
+      <table className="w-full bg-white/50 text-black rounded-md">
         <thead>
           <tr>
-            <th className="border border-gray-300 px-4 py-2">Category</th>
-            <th className="border border-gray-300 px-4 py-2">Best Seller</th>
-            <th className="border border-gray-300 px-4 py-2">Actions</th>
+            <th className=" px-4 py-2 text-dusty text-xl">Category</th>
+            <th className=" px-4 py-2 text-dusty text-xl">Best Seller</th>
+            <th className="px-4 py-2 text-dusty text-xl">Actions</th>
           </tr>
         </thead>
         <tbody>
           {categories.map((category) => (
-            <tr key={category.id}>
-              <td className="border border-gray-300 px-4 py-2">
+            <tr key={category.id} className="border-b border-gray-200 text-black">
+              <td className="px-6 py-4">
                 {category.name}
               </td>
-              <td className="border border-gray-300 px-4 py-2 text-center">
+              <td className="px-4 py-2 text-center">
                 {category.is_best_seller ? "Yes" : "No"}
               </td>
-              <td className="border border-gray-300 px-4 py-2 text-center">
+              <td className=" px-4 py-2 text-center">
                 <button
-                  className="px-4 py-2 bg-dusty text-white rounded"
+                  className="px-6 py-2 bg-dusty text-white rounded-2xl"
                   onClick={() =>
                     toggleBestSeller(category.id, category.is_best_seller)
                   }

@@ -13,6 +13,8 @@
     "aos": "^2.3.4",
     "axios": "^1.7.9",
     "boxicons": "^2.1.4",
+    "cls": "^0.1.5",
+    "clsx": "^2.1.1",
     "firebase": "^11.0.2",
     "framer-motion": "^12.23.15",
     "lucide-react": "^0.544.0",

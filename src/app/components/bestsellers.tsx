@@ -84,13 +84,15 @@ class ExploreCollection extends Component<
                     <SwiperSlide key={productIndex}>
                       <div className="flex flex-row items-center w-full p-6">
                         <div className="relative bg-white/70 rounded-2xl overflow-hidden h-[360px] w-[360px] shadow-lg transform transition duration-500 hover:scale-105 hover:shadow-2xl">
-                          <Image
-                            src={product.image}
-                            alt={product.name}
-                            className="object-cover w-full h-[300px]"
-                            height={240}
-                            width={240}
-                          />
+                          <div className="w-full h-[300px] flex items-center justify-center bg-gray-100">
+                            <Image
+                              src={product.image}
+                              alt={product.name}
+                              className="object-contain w-full h-full"
+                              height={300}
+                              width={360}
+                            />
+                          </div>
                           <div className="absolute bottom-0 w-full bg-gradient-to-t from-black/80 to-transparent p-4">
                             <h3 className="text-white text-lg font-semibold text-center">
                               {product.name}

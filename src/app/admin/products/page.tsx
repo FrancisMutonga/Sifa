@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { supabase } from "../../supabaseClient";
+import Link from "next/link";
 
 interface Category {
   id: string;
@@ -118,19 +119,31 @@ const ProductList: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen overflow-x-hidden bg-gradient-to-r from-gray-900 via-gray-800 to-black mt-20 ">
+    <div className="min-h-screen overflow-x-hidden  mt-10 ">
       <div className="w-full p-6 flex flex-col gap-4">
-        <h1 className="text-3xl font-bold text-center">Products</h1>
+       <div className="flex flex-row justify-center items-center gap-12 py-6 px-3">
+        <h1 className="text-3xl sm:text-3xl md:text-4xl lg:text-5xl text-forest  font-bold text-center">Products</h1>
+        <div className=" ">
+          <Link
+            href={"/admin/products/new"}
+            className="bg-white/50 text-forest hover:bg-forest hover:text-white px-6 py-4 rounded-full text-lg shadow-md"
+          >
+            {" "}
+            +new
+          </Link>
+          </div>
+          </div>
+         
 
         {error && <p className="text-center text-red-500">{error}</p>}
 
         <div className="mb-2 item-center justify-center">
-          <label htmlFor="category" className="block text-lg mb-2">
+          <label htmlFor="category" className="block text-xl  text-forest mb-2">
             Filter by Category
           </label>
           <select
             id="category"
-            className="px-4 py-2 border bg-gray-200 text-black rounded-md w-1/2"
+            className="px-4 py-2 border border-forest bg-white/40 text-black rounded-xl w-1/2"
             value={selectedCategory}
             onChange={(e) => setSelectedCategory(e.target.value)}
           >
@@ -155,9 +168,9 @@ const ProductList: React.FC = () => {
           <p className="text-center text-gray-600">No products available.</p>
         ) : (
           <div className="w-full overflow-mx-auto">
-            <table className="border-collapse bg-gray-200 shadow-md rounded-lg overflow-hidden w-full">
+            <table className="border-collapse bg-white/50 shadow-md rounded-lg overflow-hidden w-full">
               <thead>
-                <tr className="bg-gray-800 text-white">
+                <tr className="bg-dusty text-white">
                   <th className="py-3 px-4 text-left">Name</th>
                   <th className="py-3 px-4 text-left">Color</th>
                   <th className="py-3 px-4 text-left">Actions</th>
@@ -171,7 +184,7 @@ const ProductList: React.FC = () => {
                     <td className="py-3 px-4">
                       <button
                         onClick={() => handleEdit(product)}
-                        className="text-blue-500 hover:underline"
+                        className="text-dusty hover:underline font-semibold"
                       >
                         Edit
                       </button>
@@ -185,7 +198,7 @@ const ProductList: React.FC = () => {
 
         {editingProduct && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center mt-20">
-            <div className="bg-gradient-to-r from-gray-900 via-gray-800 to-black p-6 rounded-lg shadow-lg w-full ">
+            <div className="bg-dusty p-6 rounded-lg shadow-lg w-full ">
               <h2 className="text-2xl font-bold mb-4">Edit Product</h2>
               <form>
                 <label className="block mb-2">
@@ -243,26 +256,26 @@ const ProductList: React.FC = () => {
                     className="block w-full bg-gray-200 text-black border rounded-md px-3 py-2 mt-1"
                   />
                 </label>
-                <div className="flex justify-between gap-3 mt-4">
+                <div className="flex justify-between gap-3 mt-4 px-10">
                   <button
                     type="button"
                     onClick={handleDelete}
-                    className="bg-red-500 text-white px-4 py-2 rounded"
+                    className="bg-red-500 text-white px-4 py-2 rounded-2xl"
                   >
                     Delete
                   </button>
-                  <div>
+                  <div className="flex flex-row space-x-10">
                     <button
                       type="button"
                       onClick={() => setEditingProduct(null)}
-                      className="bg-gray-300 text-gray-700 px-4 py-2 rounded"
+                      className="bg-white text-gray-700 px-4 py-2 rounded-2xl"
                     >
                       Cancel
                     </button>
                     <button
                       type="button"
                       onClick={handleSave}
-                      className="bg-blue-500 text-white px-4 py-2 rounded ml-2"
+                      className="bg-forest text-white px-4 py-2 rounded-2xl ml-2"
                     >
                       Save
                     </button>

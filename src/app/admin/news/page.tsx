@@ -34,14 +34,14 @@ const NewsManagement: React.FC = () => {
       if (error) {
         console.error("Error fetching news:", error);
       } else {
-        setNews(data || []);  // Ensure we don't get null
+        setNews(data || []);  
       }
     };
 
     fetchNews();
   }, []);
 
-  // Handle input changes in the form
+  
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -60,13 +60,13 @@ const NewsManagement: React.FC = () => {
       return;
     }
   
-    // Define a unique file path to avoid conflicts
+ 
     const filePath = `images/${Date.now()}_${file.name}`;
   
     try {
-      // Upload the file to Supabase storage
+   
       const { data, error } = await supabase.storage
-        .from("images") // Ensure this matches your bucket name
+        .from("images") 
         .upload(filePath, file);
   
       if (error) {
@@ -87,7 +87,7 @@ const NewsManagement: React.FC = () => {
           return;
         }
   
-        // Update state with the public URL
+       
         setNewNews((prev) => ({
           ...prev,
           image: publicUrlData.publicUrl,
@@ -99,11 +99,11 @@ const NewsManagement: React.FC = () => {
   };
   
   
-  // Handle form submit (Add or Update news)
+ 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (editing) {
-      // Update existing news
+     
       const {error } = await supabase
         .from("news")
         .update({
@@ -117,7 +117,7 @@ const NewsManagement: React.FC = () => {
       if (error) {
         console.error("Error updating news:", error);
       } else {
-        // Fetch updated news list
+       
         setNews((prevNews) =>
           prevNews.map((item) =>
             item.id === editing.id ? { ...item, ...newNews } : item
@@ -125,10 +125,10 @@ const NewsManagement: React.FC = () => {
         );
         setEditing(null);
         setNewNews({ title: "", description: "", image: "", publish_date: "" });
-        setShowForm(false); // Hide form after submit
+        setShowForm(false); 
       }
     } else {
-      // Add new news
+     
       const { data, error } = await supabase
         .from("news")
         .insert([newNews]);
@@ -136,15 +136,15 @@ const NewsManagement: React.FC = () => {
       if (error) {
         console.error("Error adding news:", error);
       } else {
-        // Fetch updated news list
+        
         setNews((prevNews) => [...prevNews, ...(data || [])]);
         setNewNews({ title: "", description: "", image: "", publish_date: "" });
-        setShowForm(false); // Hide form after submit
+        setShowForm(false); 
       }
     }
   };
 
-  // Handle edit click
+ 
   const handleEdit = (item: NewsItem) => {
     setNewNews({
       title: item.title,
@@ -153,27 +153,27 @@ const NewsManagement: React.FC = () => {
       publish_date: item.publish_date,
     });
     setEditing(item);
-    setShowForm(true); // Show the form when editing
+    setShowForm(true); 
   };
 
-  // Handle delete click
+ 
   const handleDelete = async (id: string) => {
     const { error } = await supabase.from("news").delete().eq("id", id);
     if (error) {
       console.error("Error deleting news:", error);
     } else {
-      // Fetch updated news list
+      
       setNews((prevNews) => prevNews.filter((item) => item.id !== id));
     }
   };
 
-  // Show the form to add new news
+ 
   const handleAddNew = () => {
     setShowForm(true);
     setEditing(null); 
   };
 
-  // Handle form cancel
+ 
   const handleCancel = () => {
     setShowForm(false);
     setNewNews({ title: "", description: "", image: "", publish_date: "" });
@@ -181,20 +181,20 @@ const NewsManagement: React.FC = () => {
   };
 
   return (
-    <div className="p-4 mt-20 bg-gradient-to-r from-gray-900 via-gray-800 to-black">
-      <h2 className="text-2xl font-bold mb-4">Manage News</h2>
-
-      {/* Button to show the Add News Form */}
-      <button
+    <div className="p-4 mt-10 ">
+      <div className="flex flex-row justify-center items-center gap-12 py-6 px-3">
+      <h2 className="text-3xl sm:text-3xl md:text-4xl lg:text-5xl text-forest text-center font-bold mb-4">Manage News</h2>
+       <button
         onClick={handleAddNew}
-        className="bg-blue-500 text-white p-2 rounded mb-4"
+        className="bg-white/50 text-forest px-6 py-4 border border-forest font-semibold rounded-full mb-4"
       >
         Add New
       </button>
+      </div>
 
       {/* Displaying current news */}
       <div className="mt-6 p-4">
-        <h3 className="text-xl font-semibold">Current News</h3>
+        <h3 className="text-2xl md:text-3xl lg:text-4xl text-forest font-semibold">Current News</h3>
         {news.length === 0 ? (
           <p>No news available</p>
         ) : (
@@ -202,13 +202,15 @@ const NewsManagement: React.FC = () => {
             {news.map((item) => (
               <li key={item.id} className="flex justify-between items-center border-b pb-2">
                 <div>
-                  <h4 className="text-lg font-semibold">{item.title}</h4>
+                  <h4 className="text-xl font-semibold text-dusty">{item.title}</h4>
                   <p className="text-sm">{item.description}</p>
                   {item.image && (
                     <Image
                       src={item.image}
                       alt={item.title}
                       className="w-32 h-32 object-cover mt-2" 
+                      width={32}
+                      height={32}
                     />
                   )}
                 </div>

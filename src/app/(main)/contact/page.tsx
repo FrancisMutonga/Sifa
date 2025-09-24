@@ -9,7 +9,7 @@ import {
   FaInstagram,
   FaTwitter,
 } from "react-icons/fa";
-import { supabase } from "../supabaseClient";
+import { supabase } from "../../supabaseClient";
 
 const ContactPage: React.FC = () => {
   const [formData, setFormData] = useState({
