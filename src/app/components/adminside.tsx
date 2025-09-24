@@ -9,7 +9,7 @@ import {
 import Link from "next/link";
 import Image from "next/image";
 import clsx from "clsx";
-import { FaBasketShopping, FaComment, FaFileSignature, FaNewspaper, FaThumbsUp } from "react-icons/fa6";
+import { FaBasketShopping, FaComment, FaNewspaper, FaThumbsUp } from "react-icons/fa6";
 
 interface SidebarItemProps {
   icon: React.ReactNode;

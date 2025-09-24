@@ -27,11 +27,7 @@ const Dashboard: React.FC = () => {
     fetchUser();
   }, [router]);
 
-  const handleLogout = async () => {
-    await supabase.auth.signOut();
-    router.push("/admin/login");
-  };
-
+  
   if (isLoading) {
     return (
       <div className="flex justify-center items-center min-h-screen w-full">
