@@ -3,22 +3,16 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import {motion, AnimatePresence} from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 
-// Define HeroSectionProps interface to accept className
-interface HeroSectionProps {
-  className?: string; 
-}
-
-const HeroSection: React.FC<HeroSectionProps> = ({ className }) => {
+const HeroSection: React.FC = () => {
   const images = [
-    "/slide.jpg", 
-    "/slide1.jpg", 
+    "/slide.jpg",
+    "/slide1.jpg",
     "/slide2.jpg",
     "/slide3.jpg",
   ];
-
 
   const [index, setIndex] = useState(0);
 
@@ -69,7 +63,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ className }) => {
         <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
           <Link
             href="/shop"
-            className="flex items-center gap-2 px-6 py-3 rounded-full bg-forest  text-white font-medium hover:bg-brand-leaf transition"
+            className="flex items-center gap-2 px-6 py-3 rounded-full bg-forest text-white font-medium hover:bg-brand-leaf transition"
           >
             Browse Products <ArrowRight className="w-4 h-4" />
           </Link>
@@ -83,7 +77,6 @@ const HeroSection: React.FC<HeroSectionProps> = ({ className }) => {
       </motion.div>
     </section>
   );
-}
-
+};
 
 export default HeroSection;
