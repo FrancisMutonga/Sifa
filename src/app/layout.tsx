@@ -57,7 +57,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
       {/* Main Layout Structure */}
       <html lang="en">
-        <body className="min-h-screen w-screen flex flex-col bg-gray-100">
+        <body className="min-h-screen w-screen flex flex-col bg-nude">
           <div>
             <Nav />
             <main className="flex-grow">{children}</main>

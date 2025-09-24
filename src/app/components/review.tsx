@@ -44,9 +44,9 @@ const Reviews: React.FC<ReviewsProps> = ({ className }) => {
   ];
 
   return (
-    <section className={`bg-forest  ${className}`}>
-      <div className="container mx-auto p-4 w-full">
-        <h2 className="text-3xl font-bold text-white text-center mb-12">What Our Clients Say</h2>
+    <section className={`  ${className}`}>
+      <div className="container mx-auto px-4 py-8 w-full">
+        <h2 className="text-3xl font-bold text-forest text-center mb-12">What Our Clients Say</h2>
         <Swiper
           spaceBetween={60}  
           slidesPerView={1} 
@@ -66,7 +66,7 @@ const Reviews: React.FC<ReviewsProps> = ({ className }) => {
         >
           {reviews.map((review, index) => (
             <SwiperSlide key={index}>
-              <div className="bg-dusty shadow-xl rounded-xl p-6 flex flex-col justify-between transition-transform hover:scale-105">
+              <div className="bg-dusty shadow-lg rounded-xl p-6 flex flex-col justify-between transition-transform hover:scale-105">
                 <div className="flex items-center mb-4">
                   <Image
                     src={review.profilePic}

@@ -5,10 +5,11 @@ import 'aos/dist/aos.css';
 
 import HeroSection from './components/hero';
 import AboutCard from './components/aboutcard';
-import Stats from './components/stats';
+import Stats from './components/stat';
 import WhyUs from './components/why';
 import Reviews from './components/review';
 import ExploreCollection from './components/bestsellers';
+import CTASection from './components/cta';
 
 function Page() {
   useEffect(() => {
@@ -21,15 +22,16 @@ function Page() {
   }, []);
 
   return (
-    <div className="flex flex-col gap-6 py-8 bg-forest mt-10">
-      <HeroSection data-aos="fade-up" className="animate-fade-in" />
+    <div className="flex flex-col gap-6 py-8 mt-10">
+      <HeroSection />
 
-      <div className="gap-10 p-8">
-        <AboutCard data-aos="fade-up" className="animate-fade-in-delay" />
-        <Stats data-aos="fade-up" className="animate-slide-in" />
-        <ExploreCollection data-aos="fade-up" className="animate-fade-in-delay" />
-        <WhyUs data-aos="fade-up" className="animate-fade-in" />
-        <Reviews data-aos="fade-up" className="animate-fade-in-delay" />
+      <div className="gap-10 p-8 space-y-8">
+        <AboutCard />
+        <Stats/>
+        <ExploreCollection />
+        <WhyUs />
+        <Reviews />
+        <CTASection/>
       </div>
     </div>
   );

@@ -5,14 +5,14 @@ import Hero from "../components/phero";
 import ProductCard from "../components/productscard";
 import { supabase } from "../supabaseClient";
 import Link from "next/link";
-import Image from "next/image"; // Use Next.js Image component
+import Image from "next/image";
 
-// Define the product and category interfaces
+
 interface Product {
   id: string;
   name: string;
   image: string;
-  categories: Category[]; // Ensure categories is an array of Category objects
+  categories: Category[]; 
 }
 
 interface Category {
@@ -21,12 +21,12 @@ interface Category {
   icon: string;
 }
 
-// Define the response type from Supabase query
+
 interface ProductResponse {
   id: string;
   name: string;
   image: string;
-  categories: Category[] | Category | null; // categories can be either an array or a single object or null
+  categories: Category[] | Category | null; 
 }
 
 const ProductsPage: React.FC = () => {
@@ -36,7 +36,7 @@ const ProductsPage: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>("");
 
-  // Fetch categories and icons
+  
   useEffect(() => {
     const fetchCategories = async () => {
       const { data, error } = await supabase
@@ -48,7 +48,7 @@ const ProductsPage: React.FC = () => {
         console.error(error.message);
       } else {
         setCategories(data || []);
-        // Set the first category as the selected category
+       
         if (data && data.length > 0) {
           setSelectedCategory(data[0].name);
         }
@@ -58,7 +58,7 @@ const ProductsPage: React.FC = () => {
     fetchCategories();
   }, []);
 
-  // Fetch products based on the selected category
+
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -78,7 +78,7 @@ const ProductsPage: React.FC = () => {
           setError("Failed to load products.");
           console.error(error.message);
         } else {
-          // Validate the categories and set the product data
+      
           const validatedProducts: Product[] = (data as ProductResponse[]).map(
             (product) => ({
               ...product,
@@ -86,7 +86,7 @@ const ProductsPage: React.FC = () => {
                 ? product.categories
                 : product.categories
                 ? [product.categories]
-                : [], // Safeguard against null or non-array categories
+                : [], 
             })
           );
 
@@ -103,36 +103,36 @@ const ProductsPage: React.FC = () => {
     fetchProducts();
   }, [selectedCategory]);
 
-  // Filter products based on selected category
+ 
   const filteredProducts = selectedCategory
     ? products.filter((product) =>
         product.categories?.some(
-          (category) => category?.name === selectedCategory // Safeguard against undefined category
+          (category) => category?.name === selectedCategory 
         )
       )
     : products;
 
   return (
-    <div className="bg-forest mt-20 p-8 mx-auto ">
+    <div className=" mt-20 p-8 mx-auto ">
       <Hero />
 
       {/* Category Icons Filter */}
-      <div className="flex items-center text-white space-x-8 mb-8 overflow-x-auto">
+      <div className="flex items-center justify-center text-white space-x-8 mb-8 overflow-x-auto">
         {categories.length > 0 ? (
           categories.map((category) => (
             <button
               key={category.id}
-              className={`flex flex-col items-center ${selectedCategory === category.name ? "text-nude" : ""}`}
+              className={`flex flex-col items-center ${selectedCategory === category.name ? "text-forest" : ""}`}
               onClick={() => setSelectedCategory(category.name)}
             >
               <Image
                 src={category.icon.trimEnd() || "/icons/default.png"}
                 alt={category.name}
-                width={40}
-                height={40}
+                width={80}
+                height={80}
                 className="object-contain"
               />
-              <span>{category.name}</span>
+              <span className="text-dusty font-bold text-lg">{category.name}</span>
             </button>
           ))
         ) : (

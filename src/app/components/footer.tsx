@@ -5,8 +5,18 @@ import Link from "next/link";
 
 const Footer: React.FC = () => {
   return (
-    <footer className="bg-nude text-white p-6 mt-1">
+    <footer className="bg-forest text-white p-6 mt-1">
       <div className="container mx-auto flex flex-col md:flex-row justify-between items-start gap-12">
+          {/* Logo Section */}
+          <div className="relative w-[84px] h-[84px] rounded-xl">
+             <Image
+              src="/logo.png"
+              alt="school Logo"
+              className=" opacity-80 transition-opacity rounded-full duration-300"
+              width={100}
+              height={100}
+            />
+          </div>
         {/* Contact Us Section */}
         <div className="w-full md:w-1/3 mb-6 md:mb-0">
           <h3 className="text-xl font-bold mb-3">Contact Us</h3>
@@ -140,7 +150,7 @@ const Footer: React.FC = () => {
       <div className="border-t border-white mt-6 pt-4">
         <div className="container mx-auto text-left">
           <p className="text-sm">
-            &copy; {new Date().getFullYear()} Sifa Interiors Limited. All rights
+            &copy; {new Date().getFullYear()} Sifa Studios Limited. All rights
             reserved.
           </p>
         </div>

@@ -1,6 +1,10 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import {motion, AnimatePresence} from "framer-motion";
+import { ArrowRight } from "lucide-react";
 
 // Define HeroSectionProps interface to accept className
 interface HeroSectionProps {
@@ -15,44 +19,71 @@ const HeroSection: React.FC<HeroSectionProps> = ({ className }) => {
     "/slide3.jpg",
   ];
 
-  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const [index, setIndex] = useState(0);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
-    }, 5000); 
-
-    return () => clearInterval(interval);
-  }, [images.length]);
+    const timer = setInterval(() => {
+      setIndex((prev) => (prev + 1) % images.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, []);
 
   return (
-    <div className={`relative w-full min-h-screen mt-2 ${className}`}>
+    <section className="w-full min-h-[90vh] flex flex-col md:flex-row items-center justify-center px-6 md:px-12 py-12 gap-8 bg-brand-sand">
       {/* Carousel */}
-      <div className="w-full min-h-screen relative">
-        {images.map((image, index) => (
-          <div
+      <div className="w-full md:w-1/2 h-[300px] md:h-[450px] relative rounded-3xl overflow-hidden shadow-xl">
+        <AnimatePresence mode="wait">
+          <motion.div
             key={index}
-            className={`absolute inset-0 transition-opacity duration-1000 ${currentIndex === index ? "opacity-100" : "opacity-0"}`}
-            style={{
-              backgroundImage: `url(${image})`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              backgroundRepeat: "no-repeat",
-              height: "100vh",
-              width: "100%",
-            }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.8 }}
+            className="absolute inset-0 w-full h-full"
           >
-            {/* Slogan */}
-            <div className="absolute w-full bottom-6 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center text-white">
-              <h1 className="text-3xl md:text-5xl font-bold drop-shadow-lg">
-                Elevate Your Space with Timeless Elegance
-              </h1>
-            </div>
-          </div>
-        ))}
+            <Image
+              src={images[index]}
+              alt={`Property ${index + 1}`}
+              fill
+              className="object-cover"
+              priority
+            />
+          </motion.div>
+        </AnimatePresence>
       </div>
-    </div>
+
+      {/* Text + CTA */}
+      <motion.div
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.2 }}
+        className="w-full md:w-1/2 text-center md:text-left"
+      >
+        <h1 className="text-4xl md:text-5xl font-extrabold text-forest leading-tight mb-4 flex items-center justify-center md:justify-start gap-2">
+          Timeless Interiors, Effortless Connections
+        </h1>
+        <p className="text-lg md:text-xl text-gray-600 mb-8 max-w-xl">
+          Elevate yourself With Timeless Elegance
+        </p>
+        <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+          <Link
+            href="/shop"
+            className="flex items-center gap-2 px-6 py-3 rounded-full bg-forest  text-white font-medium hover:bg-brand-leaf transition"
+          >
+            Browse Products <ArrowRight className="w-4 h-4" />
+          </Link>
+          <Link
+            href="/contact"
+            className="flex items-center gap-2 px-6 py-3 rounded-full border-2 border-forest text-forest font-medium hover:bg-nude hover:text-forest transition"
+          >
+            Connect with Us
+          </Link>
+        </div>
+      </motion.div>
+    </section>
   );
-};
+}
+
 
 export default HeroSection;

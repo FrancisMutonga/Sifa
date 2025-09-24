@@ -10,9 +10,9 @@ module.exports = {
     extend: {
       colors: {
         nude: {
-          light: '#E4C9A6', // Light nude
-          DEFAULT: '#D2B48C', // Default nude
-          dark: '#B8956F', // Dark nude
+          light: '#E4C9A6',
+          DEFAULT: '#D2B48C', 
+          dark: '#B8956F',
         },
         forest:{
           DEFAULT:'#2D3A34'
@@ -24,7 +24,7 @@ module.exports = {
       animation: {
         'slide-in': 'slideIn 1s ease-out',
         'fade-in': 'fadeIn 1s ease-out',
-        'fade-in-delay': 'fadeIn 1s ease-out 0.5s',  // Delay fade-in animation
+        'fade-in-delay': 'fadeIn 1s ease-out 0.5s',  
       },
       keyframes: {
         slideIn: {
